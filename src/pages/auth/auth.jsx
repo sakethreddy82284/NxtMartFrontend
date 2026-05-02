@@ -1,0 +1,532 @@
+import { useState, useEffect } from "react";
+import "./auth.css";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../components/Context/User";
+
+/* ─── Constants ─── */
+const STATS = [
+  { num: "10 min", label: "Delivery" },
+  { num: "50K+",  label: "Products" },
+  { num: "4.8★",  label: "Rating"   },
+];
+
+const CATEGORY_PILLS = [
+  { emoji: "🥛", label: "Dairy",  color: "#e0f7fa" },
+  { emoji: "🥦", label: "Veggies",color: "#e8f5e9" },
+  { emoji: "🍫", label: "Snacks", color: "#fce4ec" },
+  { emoji: "🧴", label: "Beauty", color: "#f3e5f5" },
+  { emoji: "💊", label: "Health", color: "#fff8e1" },
+];
+
+const STRENGTH_LABELS = ["", "Weak", "Fair", "Good", "Strong"];
+const STRENGTH_COLORS = ["", "#ef4444", "#f59e0b", "#a855f7", "#7c3aed"];
+
+/* ─── Helpers ─── */
+function getStrength(pw) {
+  if (!pw) return 0;
+  let s = 0;
+  if (pw.length >= 8)           s++;
+  if (/[A-Z]/.test(pw))         s++;
+  if (/[0-9]/.test(pw))         s++;
+  if (/[^A-Za-z0-9]/.test(pw))  s++;
+  return s;
+}
+
+/* ─── Sub-components ─── */
+function PasswordStrength({ password }) {
+  const score = getStrength(password);
+  const color = STRENGTH_COLORS[score];
+  return (
+    <div className="zt-strength">
+      <div className="zt-strength-bar">
+        {[1, 2, 3, 4].map((i) => (
+          <div
+            key={i}
+            className="zt-strength-seg"
+            style={{ background: i <= score ? color : undefined }}
+          />
+        ))}
+      </div>
+      {password && (
+        <span className="zt-strength-label" style={{ color }}>
+          {STRENGTH_LABELS[score]}
+        </span>
+      )}
+    </div>
+  );
+}
+
+function EyeBtn({ show, onToggle }) {
+  return (
+    <button
+      type="button"
+      className="zt-eye-btn"
+      onClick={onToggle}
+      aria-label="Toggle password visibility"
+    >
+      {show ? "🙈" : "👁"}
+    </button>
+  );
+}
+
+function FieldError({ msg }) {
+  if (!msg) return null;
+  return <p className="zt-field-err">⚠ {msg}</p>;
+}
+
+function BannerError({ msg }) {
+  if (!msg) return null;
+  return <div className="zt-banner-err">⚠ {msg}</div>;
+}
+
+/* ─── Left Panel ─── */
+function LeftPanel() {
+  return (
+    <div className="zt-left">
+      {/* Animated BG blobs */}
+      <div className="zt-blob zt-blob-1" />
+      <div className="zt-blob zt-blob-2" />
+      <div className="zt-blob zt-blob-3" />
+      <div className="zt-grain" />
+
+      {/* Brand */}
+      <div className="zt-brand">
+        <div className="zt-brand-mark">N</div>
+        <span className="zt-brand-name">NxtMart</span>
+      </div>
+
+      {/* Promise badge */}
+      <div className="zt-promise-badge">
+        <div className="zt-promise-icon">⚡</div>
+        <span>Delivered in <strong>10 minutes</strong> or free</span>
+      </div>
+
+      {/* Category pills */}
+      <div className="zt-cats">
+        {CATEGORY_PILLS.map((c) => (
+          <div
+            className="zt-cat-pill"
+            key={c.label}
+            style={{ "--pill-bg": c.color }}
+          >
+            <span className="zt-cat-emoji">{c.emoji}</span>
+            <span className="zt-cat-label">{c.label}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* Hero copy */}
+      <div className="zt-hero">
+        <h1>
+          Groceries<br />
+          <span className="zt-accent">in</span> minutes,<br />
+          not hours.
+        </h1>
+        <p>
+          Fresh produce, daily essentials, snacks, and more — delivered
+          lightning-fast. No waiting. No planning ahead.
+        </p>
+        <div className="zt-stats">
+          {STATS.map((s) => (
+            <div className="zt-stat" key={s.label}>
+              <div className="zt-stat-num">{s.num}</div>
+              <div className="zt-stat-lbl">{s.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Live order card */}
+      <div className="zt-order-card">
+        <div className="zt-order-avatar">🛵</div>
+        <div className="zt-order-info">
+          <div className="zt-order-title">Ravi is on the way!</div>
+          <div className="zt-order-sub">Your order arrives in 8 min</div>
+        </div>
+        <div className="zt-order-eta">
+          <div className="zt-order-eta-num">8</div>
+          <div className="zt-order-eta-unit">min</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─── Login Form ─── */
+const LoginForm = ({ setView }) => {
+  const [email,    setEmail]    = useState("");
+  const [password, setPassword] = useState("");
+  const [showPass, setShowPass] = useState(false);
+  const [remember, setRemember] = useState(false);
+  const [errors,   setErrors]   = useState({});
+  const [loading,  setLoading]  = useState(false);
+  const navigate = useNavigate();
+  const { getUser } = useAuth(); // Added
+
+  const validate = () => {
+    const e = {};
+    if (!email.trim()) e.phone    = "Phone or email is required";
+    if (!password)     e.password = "Password is required";
+    return e;
+  };
+
+  const handleSubmit = async (ev) => {
+    ev.preventDefault();
+    const errs = validate();
+    if (Object.keys(errs).length) { setErrors(errs); return; }
+    setErrors({});
+    setLoading(true);
+    try {
+      const res = await fetch("http://localhost:2000/auth/signin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include", 
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setErrors({ general: data.message || "Invalid credentials" });
+        return;
+      }
+      
+      // Sync state with backend
+      await getUser();
+      
+      // Role-based navigation
+      const role = data.user.role;
+      if (role === 'admin') navigate('/admin');
+      else if (role === 'manager') navigate('/manager/home');
+      else if (role === 'delivery') navigate('/delivery');
+      else navigate('/customer');
+    } catch {
+      setErrors({ general: "Server not reachable. Please try again." });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} noValidate>
+      <div className="zt-form-head">
+        <div className="zt-eyebrow">Welcome back 👋</div>
+        <h2 className="zt-form-title">Sign in to NxtMart</h2>
+        <p className="zt-form-sub">Your cart is waiting for you.</p>
+      </div>
+
+      <BannerError msg={errors.general} />
+
+      <div className="zt-field">
+        <label className="zt-label" htmlFor="zt-phone"> Email</label>
+        <div className="zt-input-wrap">
+          <span className="zt-icon">📱</span>
+          <input
+            id="zt-phone"
+            className={`zt-input${errors.phone ? " error" : ""}`}
+            type="text"
+            placeholder="+91 98765 43210 or you@email.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            autoComplete="username"
+          />
+        </div>
+        <FieldError msg={errors.phone} />
+      </div>
+
+      <div className="zt-field">
+        <label className="zt-label" htmlFor="zt-pass">Password</label>
+        <div className="zt-input-wrap">
+          <span className="zt-icon">🔐</span>
+          <input
+            id="zt-pass"
+            className={`zt-input${errors.password ? " error" : ""}`}
+            type={showPass ? "text" : "password"}
+            placeholder="Enter password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            autoComplete="current-password"
+          />
+          <EyeBtn show={showPass} onToggle={() => setShowPass((v) => !v)} />
+        </div>
+        <FieldError msg={errors.password} />
+      </div>
+
+      <div className="zt-row-opts">
+        <label className="zt-remember">
+          <input
+            type="checkbox"
+            checked={remember}
+            onChange={(e) => setRemember(e.target.checked)}
+          />
+          <span>Remember me</span>
+        </label>
+        <button type="button" className="zt-forgot">Forgot password?</button>
+      </div>
+
+      <button className="zt-cta" type="submit" disabled={loading}>
+        {loading ? (
+          <span className="zt-spinner" />
+        ) : (
+          <>
+            <span>Sign In</span>
+            <span className="zt-cta-arrow">→</span>
+          </>
+        )}
+      </button>
+
+      <div className="zt-divider">
+        <div className="zt-div-line" />
+        <span>or</span>
+        <div className="zt-div-line" />
+      </div>
+
+      <button type="button" className="zt-otp-btn">
+        <span>📲</span>
+        <span>Login with OTP</span>
+      </button>
+
+      <p className="zt-switch">
+        New to NxtMart?&nbsp;
+        <button type="button" onClick={() => setView("signup")}>
+          Create account
+        </button>
+      </p>
+    </form>
+  );
+}
+
+/* ─── Signup Form ─── */
+function SignupForm({ setView }) {
+  const [name,        setName]        = useState("");
+  const [phone,       setPhone]       = useState("");
+  const [email,       setEmail]       = useState("");
+  const [password,    setPassword]    = useState("");
+  const [confirm,     setConfirm]     = useState("");
+  const [showPass,    setShowPass]    = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [agreed,      setAgreed]      = useState(false);
+  const [errors,      setErrors]      = useState({});
+  const [loading,     setLoading]     = useState(false);
+
+  const validate = () => {
+    const e = {};
+    if (!name.trim())                          e.name     = "Required";
+    if (!phone.trim())                         e.phone    = "Phone is required";
+    if (!email.trim())                         e.email    = "Email is required";
+    else if (!/\S+@\S+\.\S+/.test(email))      e.email    = "Enter a valid email";
+    if (!password)                             e.password = "Password is required";
+    else if (password.length < 8)              e.password = "Minimum 8 characters";
+    if (password !== confirm)                  e.confirm  = "Passwords do not match";
+    if (!agreed)                               e.terms    = "Please agree to continue";
+    return e;
+  };
+
+  const handleSubmit = async (ev) => {
+    ev.preventDefault();
+    const errs = validate();
+    if (Object.keys(errs).length) { setErrors(errs); return; }
+    setErrors({});
+    setLoading(true);
+    try {
+      const res = await fetch("http://localhost:2000/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, phone, password }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setErrors(data.errors || { general: data.message || "Something went wrong" });
+        return;
+      }
+      setView("login");
+    } catch {
+      setErrors({ general: "Server not reachable. Please try again." });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} noValidate>
+      <div className="zt-form-head">
+        <div className="zt-eyebrow">Get started 🚀</div>
+        <h2 className="zt-form-title">Create account</h2>
+        <p className="zt-form-sub">Join 10 million+ happy customers.</p>
+      </div>
+
+      <BannerError msg={errors.general} />
+
+      <div className="zt-field">
+        <label className="zt-label" htmlFor="su-name">Name</label>
+        <div className="zt-input-wrap">
+          <span className="zt-icon">👤</span>
+          <input
+            id="su-name"
+            className={`zt-input${errors.name ? " error" : ""}`}
+            type="text"
+            placeholder="Priya Sharma"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            autoComplete="name"
+          />
+        </div>
+        <FieldError msg={errors.name} />
+      </div>
+
+      <div className="zt-field">
+        <label className="zt-label" htmlFor="su-phone">Phone number</label>
+        <div className="zt-input-wrap">
+          <span className="zt-icon">📱</span>
+          <input
+            id="su-phone"
+            className={`zt-input${errors.phone ? " error" : ""}`}
+            type="tel"
+            placeholder="+91 98765 43210"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            autoComplete="tel"
+          />
+        </div>
+        <FieldError msg={errors.phone} />
+      </div>
+
+      <div className="zt-field">
+        <label className="zt-label" htmlFor="su-email">Email address</label>
+        <div className="zt-input-wrap">
+          <span className="zt-icon">✉️</span>
+          <input
+            id="su-email"
+            className={`zt-input${errors.email ? " error" : ""}`}
+            type="email"
+            placeholder="you@email.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            autoComplete="email"
+          />
+        </div>
+        <FieldError msg={errors.email} />
+      </div>
+
+      <div className="zt-field">
+        <label className="zt-label" htmlFor="su-pass">Password</label>
+        <div className="zt-input-wrap">
+          <span className="zt-icon">🔐</span>
+          <input
+            id="su-pass"
+            className={`zt-input${errors.password ? " error" : ""}`}
+            type={showPass ? "text" : "password"}
+            placeholder="Min. 8 characters"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            autoComplete="new-password"
+          />
+          <EyeBtn show={showPass} onToggle={() => setShowPass((v) => !v)} />
+        </div>
+        <PasswordStrength password={password} />
+        <FieldError msg={errors.password} />
+      </div>
+
+      <div className="zt-field">
+        <label className="zt-label" htmlFor="su-confirm">Confirm password</label>
+        <div className="zt-input-wrap">
+          <span className="zt-icon">🔐</span>
+          <input
+            id="su-confirm"
+            className={`zt-input${errors.confirm ? " error" : ""}`}
+            type={showConfirm ? "text" : "password"}
+            placeholder="Re-enter password"
+            value={confirm}
+            onChange={(e) => setConfirm(e.target.value)}
+            autoComplete="new-password"
+          />
+          <EyeBtn show={showConfirm} onToggle={() => setShowConfirm((v) => !v)} />
+        </div>
+        <FieldError msg={errors.confirm} />
+      </div>
+
+      <label className="zt-terms">
+        <input
+          type="checkbox"
+          checked={agreed}
+          onChange={(e) => setAgreed(e.target.checked)}
+        />
+        <span>
+          I agree to the{" "}
+          <a href="#" onClick={(e) => e.preventDefault()}>Terms of Service</a>
+          {" "}and{" "}
+          <a href="#" onClick={(e) => e.preventDefault()}>Privacy Policy</a>
+        </span>
+      </label>
+      <FieldError msg={errors.terms} />
+
+      <button className="zt-cta" type="submit" disabled={loading}>
+        {loading ? (
+          <span className="zt-spinner" />
+        ) : (
+          <>
+            <span>Create Account</span>
+            <span className="zt-cta-arrow">→</span>
+          </>
+        )}
+      </button>
+
+      <p className="zt-switch">
+        Already have an account?&nbsp;
+        <button type="button" onClick={() => setView("login")}>Sign in</button>
+      </p>
+    </form>
+  );
+}
+
+/* ─── Root ─── */
+export default function AuthPage() {
+  const [view, setView] = useState("login");
+  const navigate = useNavigate();
+  const { user, loading } = useAuth();
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (!loading && user) {
+      navigate('/'); 
+    }
+  }, [user, loading, navigate]);
+
+  return (
+    <div className="zt-page">
+      <LeftPanel />
+
+      <div className="zt-right">
+        {/* Mobile-only brand */}
+        <div className="zt-mobile-brand">
+          <div className="zt-mobile-mark">N</div>
+          <span className="zt-mobile-name">NxtMart</span>
+        </div>
+
+        <div className="zt-card">
+          {/* Tab switcher */}
+          <div className="zt-tabs">
+            <button
+              type="button"
+              className={`zt-tab${view === "login"  ? " active" : ""}`}
+              onClick={() => setView("login")}
+            >
+              Sign In
+            </button>
+            <button
+              type="button"
+              className={`zt-tab${view === "signup" ? " active" : ""}`}
+              onClick={() => setView("signup")}
+            >
+              Sign Up
+            </button>
+          </div>
+
+          {view === "login"
+            ? <LoginForm  setView={setView} />
+            : <SignupForm setView={setView} />
+          }
+        </div>
+      </div>
+    </div>
+  );
+}
