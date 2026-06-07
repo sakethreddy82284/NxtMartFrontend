@@ -33,7 +33,7 @@
 .onboarding-content h1 {
   font-size: 28px;
   font-weight: 800;
-  color: #1A4D2E;
+  color: var(--z-green);
   line-height: 1.2;
   margin-bottom: 16px;
 }
@@ -62,7 +62,7 @@
 
 .dot.active {
   width: 24px;
-  background: #1A4D2E;
+  background: var(--z-green);
   border-radius: 10px;
 }
 
@@ -70,7 +70,7 @@
   width: 100%;
   max-width: 320px;
   height: 56px;
-  background: #1A4D2E;
+  background: var(--z-green);
   color: white;
   border: none;
   border-radius: 16px;

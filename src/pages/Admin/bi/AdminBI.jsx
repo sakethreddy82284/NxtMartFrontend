@@ -52,8 +52,8 @@ export default function AdminBI() {
               <AreaChart data={data.revenueGrowth} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                 <defs>
                   <linearGradient id="colorRev" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#1A4D2E" stopOpacity={0.05}/>
-                    <stop offset="95%" stopColor="#1A4D2E" stopOpacity={0}/>
+                    <stop offset="5%" stopColor="var(--z-green)" stopOpacity={0.05}/>
+                    <stop offset="95%" stopColor="var(--z-green)" stopOpacity={0}/>
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
@@ -84,18 +84,18 @@ export default function AdminBI() {
                     boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04)',
                     padding: '12px 16px'
                   }}
-                  itemStyle={{ fontWeight: 700, color: '#1A4D2E' }}
-                  cursor={{ stroke: '#1A4D2E', strokeWidth: 1, strokeDasharray: '4 4' }}
+                  itemStyle={{ fontWeight: 700, color: 'var(--z-green)' }}
+                  cursor={{ stroke: 'var(--z-green)', strokeWidth: 1, strokeDasharray: '4 4' }}
                 />
                 <Area 
                   type="monotone" 
                   dataKey="revenue" 
-                  stroke="#1A4D2E" 
+                  stroke="var(--z-green)" 
                   strokeWidth={3} 
                   fillOpacity={1} 
                   fill="url(#colorRev)"
-                  dot={{ r: 5, fill: '#1A4D2E', strokeWidth: 2, stroke: '#fff' }}
-                  activeDot={{ r: 7, fill: '#1A4D2E', strokeWidth: 0 }}
+                  dot={{ r: 5, fill: 'var(--z-green)', strokeWidth: 2, stroke: '#fff' }}
+                  activeDot={{ r: 7, fill: 'var(--z-green)', strokeWidth: 0 }}
                 />
               </AreaChart>
             </ResponsiveContainer>
@@ -120,7 +120,7 @@ export default function AdminBI() {
                   cornerRadius={10}
                 >
                   {data.categoryStats.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={index === 0 ? '#1A4D2E' : index === 1 ? '#F97316' : COLORS[index % COLORS.length]} />
+                    <Cell key={`cell-${index}`} fill={index === 0 ? 'var(--z-green)' : index === 1 ? '#F97316' : COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>
                 <Tooltip 
@@ -146,7 +146,7 @@ export default function AdminBI() {
                 <Tooltip 
                    contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px rgba(0,0,0,0.1)' }}
                 />
-                <Bar dataKey="avgTime" fill="#1A4D2E" radius={[10, 10, 0, 0]} barSize={25} />
+                <Bar dataKey="avgTime" fill="var(--z-green)" radius={[10, 10, 0, 0]} barSize={25} />
               </BarChart>
             </ResponsiveContainer>
           </div>

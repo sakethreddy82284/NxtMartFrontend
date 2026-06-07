@@ -78,7 +78,7 @@
 /* Info Section */
 .sp-brand-tag {
   background: #f0fdf4;
-  color: #1A4D2E;
+  color: var(--z-green);
   display: inline-block;
   padding: 6px 12px;
   border-radius: 8px;
@@ -117,7 +117,7 @@
 }
 
 .sp-divider { color: #cbd5e1; }
-.sp-pack-size { font-weight: 600; color: #1A4D2E; }
+.sp-pack-size { font-weight: 600; color: var(--z-green); }
 
 .sp-price-box {
   display: flex;
@@ -173,7 +173,7 @@
 .sp-add-btn {
   width: 100%;
   max-width: 320px;
-  background: linear-gradient(135deg, #1A4D2E 0%, #153d25 100%);
+  background: linear-gradient(135deg, var(--z-green) 0%, #153d25 100%);
   color: white;
   border: none;
   padding: 18px 32px;
@@ -197,7 +197,7 @@
 .sp-qty-selector {
   width: 100%;
   max-width: 300px;
-  background: #1A4D2E;
+  background: var(--z-green);
   color: white;
   display: flex;
   align-items: center;
@@ -288,7 +288,7 @@
 
 .sp-bar-add {
   flex: 1;
-  background: #1A4D2E;
+  background: var(--z-green);
   color: white;
   border: none;
   padding: 16px;
@@ -410,5 +410,5 @@
 
 /* Loader */
 .sp-loader { height: 100vh; display: flex; align-items: center; justify-content: center; }
-.sp-spinner { width: 40px; height: 40px; border: 4px solid #f1f5f9; border-top-color: #1A4D2E; border-radius: 50%; animation: spin 1s linear infinite; }
+.sp-spinner { width: 40px; height: 40px; border: 4px solid #f1f5f9; border-top-color: var(--z-green); border-radius: 50%; animation: spin 1s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }

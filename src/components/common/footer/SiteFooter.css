@@ -1,5 +1,5 @@
 .main-footer {
-  background-color: #1A4D2E; /* Forest Green */
+  background-color: var(--z-green); /* Forest Green */
   color: #FFFFFF;
   padding: 60px 0 30px;
   margin-top: 60px;

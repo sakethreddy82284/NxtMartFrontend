@@ -42,7 +42,7 @@
 /* Balance Card */
 .balance-card {
   position: relative;
-  background: linear-gradient(135deg, #1A4D2E, #0d2b1a);
+  background: linear-gradient(135deg, var(--z-green), #0d2b1a);
   border-radius: 28px;
   padding: 30px;
   color: white;
@@ -115,7 +115,7 @@
 
 .add-money-btn:hover {
   background: white;
-  color: #1A4D2E;
+  color: var(--z-green);
 }
 
 /* Stats */

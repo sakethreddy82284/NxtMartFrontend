@@ -17,7 +17,7 @@ const data = [
 ];
 
 const catData = [
-  { name: 'Dairy', value: 400, color: '#1A4D2E' },
+  { name: 'Dairy', value: 400, color: 'var(--z-green)' },
   { name: 'Fruits', value: 300, color: '#EA580C' },
   { name: 'Meat', value: 200, color: '#7c3aed' },
   { name: 'Bakery', value: 150, color: '#3b82f6' },
@@ -50,9 +50,9 @@ export default function ManagerAnalytics() {
                 <Line 
                   type="monotone" 
                   dataKey="revenue" 
-                  stroke="#1A4D2E" 
+                  stroke="var(--z-green)" 
                   strokeWidth={3} 
-                  dot={{r: 4, fill: '#1A4D2E'}} 
+                  dot={{r: 4, fill: 'var(--z-green)'}} 
                   activeDot={{r: 6}}
                 />
               </LineChart>

@@ -313,7 +313,7 @@
 }
 
 .p-qty-pill-v4 {
-  background: #1A4D2E;
+  background: var(--z-green);
   color: #ffffff;
   display: flex;
   align-items: center;

@@ -26,10 +26,10 @@ const Footer = () => {
           <div className="footer-brand">
             <div className="footer-logo">
               <span className="logo-icon">N</span>
-              <span className="logo-text">NxtMart</span>
+              <span className="logo-text">NxtMart Tech</span>
             </div>
             <p className="brand-desc">
-              Your favorite neighborhood grocery store, now online. Freshness delivered to your doorstep in 10 minutes.
+              Your premium neighborhood electronics store, now online. Sleek laptops, smartphones, and audio gear delivered to your doorstep in minutes.
             </p>
             <div className="contact-info">
               <div className="contact-item">
@@ -81,7 +81,7 @@ const Footer = () => {
         </div>
 
         <div className="footer-bottom">
-          <p className="copyright">© 2026 NxtMart Quick Commerce. All rights reserved.</p>
+          <p className="copyright">© 2026 NxtMart Tech Commerce. All rights reserved.</p>
           <div className="social-links">
             <a href="#" aria-label="Website"><GlobeIcon /></a>
             <a href="#" aria-label="Email"><MailIcon /></a>

@@ -34,7 +34,7 @@
 .brand-logo {
   width: 40px;
   height: 40px;
-  background: linear-gradient(135deg, #1A4D2E, #FF6D00);
+  background: linear-gradient(135deg, var(--z-green), #FF6D00);
   border-radius: 12px;
   color: white;
   display: flex;
@@ -102,7 +102,7 @@
 
 .nav-item.active {
   background: #f0fdf4;
-  color: #1A4D2E;
+  color: var(--z-green);
 }
 
 .active-pill {
@@ -111,7 +111,7 @@
   top: 12px;
   bottom: 12px;
   width: 4px;
-  background: #1A4D2E;
+  background: var(--z-green);
   border-radius: 0 4px 4px 0;
 }
 
@@ -205,12 +205,12 @@
   transition: all 0.2s ease;
 }
 
-.manager-profile-pill:hover { border-color: #1A4D2E; background: #f8fafc; }
+.manager-profile-pill:hover { border-color: var(--z-green); background: #f8fafc; }
 
 .manager-avatar {
   width: 34px;
   height: 34px;
-  background: #1A4D2E;
+  background: var(--z-green);
   color: white;
   border-radius: 50%;
   display: flex;
@@ -296,7 +296,7 @@
 }
 
 .card-head h3 { font-size: 18px; font-weight: 800; margin: 0; }
-.text-btn { background: none; border: none; color: #1A4D2E; font-weight: 700; display: flex; align-items: center; gap: 4px; cursor: pointer; font-size: 13px; }
+.text-btn { background: none; border: none; color: var(--z-green); font-weight: 700; display: flex; align-items: center; gap: 4px; cursor: pointer; font-size: 13px; }
 
 .activity-list { display: flex; flex-direction: column; gap: 16px; }
 .activity-item { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 12px; background: #f8fafc; }
@@ -323,7 +323,7 @@
   transition: all 0.2s ease;
   text-align: left;
 }
-.qa-btn:hover { border-color: #1A4D2E; background: #f0fdf4; color: #1A4D2E; }
+.qa-btn:hover { border-color: var(--z-green); background: #f0fdf4; color: var(--z-green); }
 
 /* ── ANIMATION ── */
 .animate-in {

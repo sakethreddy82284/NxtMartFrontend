@@ -1,37 +1,38 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
-import { BASE_URL } from "../../config";
-import "./auth.css";
-import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../components/Context/User";
+import { BASE_URL } from "../../config";
+import "./auth.css";
+import {
+  Mail,
+  Lock,
+  Eye,
+  EyeOff,
+  Smartphone,
+  Zap,
+  Leaf,
+  ShieldCheck,
+  Users,
+  Star,
+  RotateCcw,
+  User,
+  ArrowRight
+} from "lucide-react";
 
-/* ─── Constants ─── */
-const STATS = [
-  { num: "10 min", label: "Delivery" },
-  { num: "50K+",  label: "Products" },
-  { num: "4.8★",  label: "Rating"   },
-];
-
-const CATEGORY_PILLS = [
-  { emoji: "🥛", label: "Dairy",  color: "#e0f7fa" },
-  { emoji: "🥦", label: "Veggies",color: "#e8f5e9" },
-  { emoji: "🍫", label: "Snacks", color: "#fce4ec" },
-  { emoji: "🧴", label: "Beauty", color: "#f3e5f5" },
-  { emoji: "💊", label: "Health", color: "#fff8e1" },
-];
-
-const STRENGTH_LABELS = ["", "Weak", "Fair", "Good", "Strong"];
-const STRENGTH_COLORS = ["", "#ef4444", "#f59e0b", "#a855f7", "#7c3aed"];
+import techDevicesImg from "../../assets/tech_devices.png";
+import interiorBlurImg from "../../assets/interior_blur.png";
 
 /* ─── Helpers ─── */
+const STRENGTH_LABELS = ["", "Weak", "Fair", "Good", "Strong"];
+const STRENGTH_COLORS = ["", "#ef4444", "#f59e0b", "#10b981", "#059669"];
+
 function getStrength(pw) {
   if (!pw) return 0;
   let s = 0;
-  if (pw.length >= 8)           s++;
-  if (/[A-Z]/.test(pw))         s++;
-  if (/[0-9]/.test(pw))         s++;
-  if (/[^A-Za-z0-9]/.test(pw))  s++;
+  if (pw.length >= 8) s++;
+  if (/[A-Z]/.test(pw)) s++;
+  if (/[0-9]/.test(pw)) s++;
+  if (/[^A-Za-z0-9]/.test(pw)) s++;
   return s;
 }
 
@@ -67,7 +68,7 @@ function EyeBtn({ show, onToggle }) {
       onClick={onToggle}
       aria-label="Toggle password visibility"
     >
-      {show ? "🙈" : "👁"}
+      {show ? <EyeOff size={16} /> : <Eye size={16} />}
     </button>
   );
 }
@@ -82,74 +83,64 @@ function BannerError({ msg }) {
   return <div className="zt-banner-err">⚠ {msg}</div>;
 }
 
-/* ─── Left Panel ─── */
+/* ─── Left Panel (Sidebar) ─── */
 function LeftPanel() {
   return (
     <div className="zt-left">
-      {/* Animated BG blobs */}
-      <div className="zt-blob zt-blob-1" />
-      <div className="zt-blob zt-blob-2" />
-      <div className="zt-blob zt-blob-3" />
-      <div className="zt-grain" />
-
       {/* Brand */}
       <div className="zt-brand">
         <div className="zt-brand-mark">N</div>
-        <span className="zt-brand-name">NxtMart</span>
+        <span className="zt-brand-name">NxtMart Tech</span>
       </div>
 
-      {/* Promise badge */}
-      <div className="zt-promise-badge">
-        <div className="zt-promise-icon">⚡</div>
-        <span>Delivered in <strong>10 minutes</strong> or free</span>
-      </div>
-
-      {/* Category pills */}
-      <div className="zt-cats">
-        {CATEGORY_PILLS.map((c) => (
-          <div
-            className="zt-cat-pill"
-            key={c.label}
-            style={{ "--pill-bg": c.color }}
-          >
-            <span className="zt-cat-emoji">{c.emoji}</span>
-            <span className="zt-cat-label">{c.label}</span>
-          </div>
-        ))}
-      </div>
-
-      {/* Hero copy */}
+      {/* Hero Copy */}
       <div className="zt-hero">
         <h1>
-          Groceries<br />
+          Tech & Gadgets<br />
           <span className="zt-accent">in</span> minutes,<br />
           not hours.
         </h1>
-        <p>
-          Fresh produce, daily essentials, snacks, and more — delivered
-          lightning-fast. No waiting. No planning ahead.
+        <p className="zt-hero-desc">
+          Premium laptops, smartphones, audio gear, and accessories — delivered lightning-fast.
         </p>
-        <div className="zt-stats">
-          {STATS.map((s) => (
-            <div className="zt-stat" key={s.label}>
-              <div className="zt-stat-num">{s.num}</div>
-              <div className="zt-stat-lbl">{s.label}</div>
+
+        {/* Feature List */}
+        <div className="zt-features">
+          <div className="zt-feature-item">
+            <div className="zt-feature-icon-wrap">
+              <Zap size={16} />
             </div>
-          ))}
+            <div>
+              <div className="zt-feature-title">Instant Delivery</div>
+              <div className="zt-feature-sub">Ultra-fast local delivery of tech essentials</div>
+            </div>
+          </div>
+
+          <div className="zt-feature-item">
+            <div className="zt-feature-icon-wrap">
+              <Smartphone size={16} />
+            </div>
+            <div>
+              <div className="zt-feature-title">Certified Authentic</div>
+              <div className="zt-feature-sub">100% genuine products with brand warranty</div>
+            </div>
+          </div>
+
+          <div className="zt-feature-item">
+            <div className="zt-feature-icon-wrap">
+              <ShieldCheck size={16} />
+            </div>
+            <div>
+              <div className="zt-feature-title">Secure Purchase</div>
+              <div className="zt-feature-sub">Safe payments & hassle-free returns</div>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Live order card */}
-      <div className="zt-order-card">
-        <div className="zt-order-avatar">🛵</div>
-        <div className="zt-order-info">
-          <div className="zt-order-title">Ravi is on the way!</div>
-          <div className="zt-order-sub">Your order arrives in 8 min</div>
-        </div>
-        <div className="zt-order-eta">
-          <div className="zt-order-eta-num">8</div>
-          <div className="zt-order-eta-unit">min</div>
-        </div>
+      {/* Bottom Basket Image */}
+      <div className="zt-left-image-wrap">
+        <img src={techDevicesImg} alt="Tech Devices" className="zt-left-image" />
       </div>
     </div>
   );
@@ -157,19 +148,19 @@ function LeftPanel() {
 
 /* ─── Login Form ─── */
 const LoginForm = ({ setView }) => {
-  const [email,    setEmail]    = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPass, setShowPass] = useState(false);
   const [remember, setRemember] = useState(false);
-  const [errors,   setErrors]   = useState({});
-  const [loading,  setLoading]  = useState(false);
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { getUser } = useAuth(); // Added
+  const { getUser } = useAuth();
 
   const validate = () => {
     const e = {};
-    if (!email.trim()) e.phone    = "Phone or email is required";
-    if (!password)     e.password = "Password is required";
+    if (!email.trim()) e.phone = "Phone or email is required";
+    if (!password) e.password = "Password is required";
     return e;
   };
 
@@ -183,7 +174,7 @@ const LoginForm = ({ setView }) => {
       const res = await fetch(`${BASE_URL}/auth/signin`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        credentials: "include", 
+        credentials: "include",
         body: JSON.stringify({ email, password }),
       });
       const data = await res.json();
@@ -191,10 +182,10 @@ const LoginForm = ({ setView }) => {
         setErrors({ general: data.message || "Invalid credentials" });
         return;
       }
-      
+
       // Sync state with backend
       await getUser();
-      
+
       // Role-based navigation
       const role = data.user.role;
       if (role === 'admin') navigate('/admin');
@@ -212,22 +203,21 @@ const LoginForm = ({ setView }) => {
   return (
     <form onSubmit={handleSubmit} noValidate>
       <div className="zt-form-head">
-        <div className="zt-eyebrow">Welcome back 👋</div>
-        <h2 className="zt-form-title">Sign in to NxtMart</h2>
-        <p className="zt-form-sub">Your cart is waiting for you.</p>
+        <h2 className="zt-form-title">Welcome back 👋</h2>
+        <p className="zt-form-sub">Sign in to continue to your account</p>
       </div>
 
       <BannerError msg={errors.general} />
 
       <div className="zt-field">
-        <label className="zt-label" htmlFor="zt-phone"> Email</label>
+        <label className="zt-label" htmlFor="zt-phone">Email address</label>
         <div className="zt-input-wrap">
-          <span className="zt-icon">📱</span>
+          <Mail className="zt-icon" size={16} />
           <input
             id="zt-phone"
             className={`zt-input${errors.phone ? " error" : ""}`}
             type="text"
-            placeholder="+91 98765 43210 or you@email.com"
+            placeholder="you@example.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             autoComplete="username"
@@ -239,12 +229,12 @@ const LoginForm = ({ setView }) => {
       <div className="zt-field">
         <label className="zt-label" htmlFor="zt-pass">Password</label>
         <div className="zt-input-wrap">
-          <span className="zt-icon">🔐</span>
+          <Lock className="zt-icon" size={16} />
           <input
             id="zt-pass"
             className={`zt-input${errors.password ? " error" : ""}`}
             type={showPass ? "text" : "password"}
-            placeholder="Enter password"
+            placeholder="Enter your password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             autoComplete="current-password"
@@ -272,7 +262,7 @@ const LoginForm = ({ setView }) => {
         ) : (
           <>
             <span>Sign In</span>
-            <span className="zt-cta-arrow">→</span>
+            <ArrowRight size={16} className="zt-cta-arrow" />
           </>
         )}
       </button>
@@ -283,13 +273,24 @@ const LoginForm = ({ setView }) => {
         <div className="zt-div-line" />
       </div>
 
-      <button type="button" className="zt-otp-btn">
-        <span>📲</span>
+      {/* Social Buttons */}
+      <button type="button" className="zt-social-btn zt-google-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
+          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
+          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05" />
+          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
+        </svg>
+        <span>Continue with Google</span>
+      </button>
+
+      <button type="button" className="zt-social-btn zt-otp-btn">
+        <Smartphone size={18} />
         <span>Login with OTP</span>
       </button>
 
       <p className="zt-switch">
-        New to NxtMart?&nbsp;
+        New to NxtMart Tech?&nbsp;
         <button type="button" onClick={() => setView("signup")}>
           Create account
         </button>
@@ -300,16 +301,16 @@ const LoginForm = ({ setView }) => {
 
 /* ─── Signup Form ─── */
 function SignupForm({ setView }) {
-  const [name,        setName]        = useState("");
-  const [phone,       setPhone]       = useState("");
-  const [email,       setEmail]       = useState("");
-  const [password,    setPassword]    = useState("");
-  const [confirm,     setConfirm]     = useState("");
-  const [showPass,    setShowPass]    = useState(false);
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
+  const [showPass, setShowPass] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
-  const [agreed,      setAgreed]      = useState(false);
-  const [errors,      setErrors]      = useState({});
-  const [loading,     setLoading]     = useState(false);
+  const [agreed, setAgreed] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
   const { getUser } = useAuth();
   const navigate = useNavigate();
 
@@ -320,16 +321,16 @@ function SignupForm({ setView }) {
     } else if (!/^[A-Za-z\s]+$/.test(name)) {
       e.name = "Name must contain only letters";
     }
-    
+
     if (!phone.trim()) {
       e.phone = "Phone is required";
     } else if (!/^[6-9]\d{9}$/.test(phone)) {
       e.phone = "Enter a valid 10-digit Indian phone number";
     }
 
-    if (!email.trim())                         e.email    = "Email is required";
-    else if (!/\S+@\S+\.\S+/.test(email))      e.email    = "Enter a valid email";
-    
+    if (!email.trim()) e.email = "Email is required";
+    else if (!/\S+@\S+\.\S+/.test(email)) e.email = "Enter a valid email";
+
     if (!password) {
       e.password = "Password is required";
     } else if (password.length < 8) {
@@ -338,8 +339,8 @@ function SignupForm({ setView }) {
       e.password = "Must include Uppercase, Lowercase, Number & Special Char";
     }
 
-    if (password !== confirm)                  e.confirm  = "Passwords do not match";
-    if (!agreed)                               e.terms    = "Please agree to continue";
+    if (password !== confirm) e.confirm = "Passwords do not match";
+    if (!agreed) e.terms = "Please agree to continue";
     return e;
   };
 
@@ -360,7 +361,6 @@ function SignupForm({ setView }) {
         setErrors(data.errors || { general: data.message || "Something went wrong" });
         return;
       }
-      // Sync state with backend (since backend sets cookie during signup)
       await getUser();
       navigate('/');
     } catch (err) {
@@ -374,7 +374,6 @@ function SignupForm({ setView }) {
   return (
     <form onSubmit={handleSubmit} noValidate>
       <div className="zt-form-head">
-        <div className="zt-eyebrow">Get started 🚀</div>
         <h2 className="zt-form-title">Create account</h2>
         <p className="zt-form-sub">Join 10 million+ happy customers.</p>
       </div>
@@ -384,7 +383,7 @@ function SignupForm({ setView }) {
       <div className="zt-field">
         <label className="zt-label" htmlFor="su-name">Name</label>
         <div className="zt-input-wrap">
-          <span className="zt-icon">👤</span>
+          <User className="zt-icon" size={16} />
           <input
             id="su-name"
             className={`zt-input${errors.name ? " error" : ""}`}
@@ -401,7 +400,7 @@ function SignupForm({ setView }) {
       <div className="zt-field">
         <label className="zt-label" htmlFor="su-phone">Phone number</label>
         <div className="zt-input-wrap">
-          <span className="zt-icon">📱</span>
+          <Smartphone className="zt-icon" size={16} />
           <input
             id="su-phone"
             className={`zt-input${errors.phone ? " error" : ""}`}
@@ -418,7 +417,7 @@ function SignupForm({ setView }) {
       <div className="zt-field">
         <label className="zt-label" htmlFor="su-email">Email address</label>
         <div className="zt-input-wrap">
-          <span className="zt-icon">✉️</span>
+          <Mail className="zt-icon" size={16} />
           <input
             id="su-email"
             className={`zt-input${errors.email ? " error" : ""}`}
@@ -435,7 +434,7 @@ function SignupForm({ setView }) {
       <div className="zt-field">
         <label className="zt-label" htmlFor="su-pass">Password</label>
         <div className="zt-input-wrap">
-          <span className="zt-icon">🔐</span>
+          <Lock className="zt-icon" size={16} />
           <input
             id="su-pass"
             className={`zt-input${errors.password ? " error" : ""}`}
@@ -454,7 +453,7 @@ function SignupForm({ setView }) {
       <div className="zt-field">
         <label className="zt-label" htmlFor="su-confirm">Confirm password</label>
         <div className="zt-input-wrap">
-          <span className="zt-icon">🔐</span>
+          <Lock className="zt-icon" size={16} />
           <input
             id="su-confirm"
             className={`zt-input${errors.confirm ? " error" : ""}`}
@@ -490,7 +489,7 @@ function SignupForm({ setView }) {
         ) : (
           <>
             <span>Create Account</span>
-            <span className="zt-cta-arrow">→</span>
+            <ArrowRight size={16} className="zt-cta-arrow" />
           </>
         )}
       </button>
@@ -512,7 +511,7 @@ export default function AuthPage() {
   // Redirect if already logged in
   useEffect(() => {
     if (!loading && user) {
-      navigate('/'); 
+      navigate('/');
     }
   }, [user, loading, navigate]);
 
@@ -520,11 +519,17 @@ export default function AuthPage() {
     <div className="zt-page">
       <LeftPanel />
 
-      <div className="zt-right">
+      <div className="zt-right" style={{ backgroundImage: `url(${interiorBlurImg})` }}>
         {/* Mobile-only brand */}
         <div className="zt-mobile-brand">
           <div className="zt-mobile-mark">N</div>
-          <span className="zt-mobile-name">NxtMart</span>
+          <span className="zt-mobile-name">NxtMart Tech</span>
+        </div>
+
+        {/* Top Right Promise badge */}
+        <div className="zt-promise-badge">
+          <div className="zt-promise-icon">⚡</div>
+          <span>Lightning-fast delivery in <strong>10 minutes</strong></span>
         </div>
 
         <div className="zt-card">
@@ -532,7 +537,7 @@ export default function AuthPage() {
           <div className="zt-tabs">
             <button
               type="button"
-              className={`zt-tab${view === "login"  ? " active" : ""}`}
+              className={`zt-tab${view === "login" ? " active" : ""}`}
               onClick={() => setView("login")}
             >
               Sign In
@@ -547,9 +552,34 @@ export default function AuthPage() {
           </div>
 
           {view === "login"
-            ? <LoginForm  setView={setView} />
+            ? <LoginForm setView={setView} />
             : <SignupForm setView={setView} />
           }
+        </div>
+
+        {/* Stats Section on the right column bottom */}
+        <div className="zt-stats-bottom">
+          <div className="zt-stat-bottom-item">
+            <Users className="zt-stat-bottom-icon" size={20} />
+            <div>
+              <div className="zt-stat-bottom-num">1M+</div>
+              <div className="zt-stat-bottom-label">Devices Delivered</div>
+            </div>
+          </div>
+          <div className="zt-stat-bottom-item">
+            <Star className="zt-stat-bottom-icon" size={20} />
+            <div>
+              <div className="zt-stat-bottom-num">4.8 ★</div>
+              <div className="zt-stat-bottom-label">App Rating</div>
+            </div>
+          </div>
+          <div className="zt-stat-bottom-item">
+            <RotateCcw className="zt-stat-bottom-icon" size={20} />
+            <div>
+              <div className="zt-stat-bottom-num">Brand Warranty</div>
+              <div className="zt-stat-bottom-label">1-Year official warranty</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

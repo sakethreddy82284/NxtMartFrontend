@@ -84,7 +84,7 @@
   font-family: 'Syne', sans-serif;
   font-size: 24px;
   font-weight: 800;
-  color: #1A4D2E;
+  color: var(--z-green);
   animation: pulse 2s infinite;
 }
 

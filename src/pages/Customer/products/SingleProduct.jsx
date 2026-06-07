@@ -132,11 +132,11 @@ const SingleProduct = () => {
 
             <div className="sp-features">
               <div className="sp-feat">
-                <ShieldCheck size={20} color="#1A4D2E" />
+                <ShieldCheck size={20} color="var(--z-green)" />
                 <span>100% Quality Assurance</span>
               </div>
               <div className="sp-feat">
-                <Package size={20} color="#1A4D2E" />
+                <Package size={20} color="var(--z-green)" />
                 <span>Hygienically Packed</span>
               </div>
             </div>

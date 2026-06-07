@@ -12,7 +12,7 @@
 
 /* ─── HERO SECTION ─── */
 .dlv-profile-hero {
-  background: #1A4D2E;
+  background: var(--z-green);
   padding: 50px 24px 70px;
   display: flex;
   flex-direction: column;
@@ -31,7 +31,7 @@
   width: 90px;
   height: 90px;
   background: #ffffff;
-  color: #1A4D2E;
+  color: var(--z-green);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -54,7 +54,7 @@
   border-radius: 20px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  border: 2px solid #1A4D2E;
+  border: 2px solid var(--z-green);
 }
 
 .dlv-name {
@@ -141,7 +141,7 @@
 
 .dlv-tile-icon.wallet { background: #fef9c3; color: #854d0e; }
 .dlv-tile-icon.user { background: #e0f2fe; color: #0ea5e9; }
-.dlv-tile-icon.email { background: #f0f9ff; color: #0369a1; }
+.dlv-tile-icon.email { background: #f0fdf4; color: #0369a1; }
 .dlv-tile-icon.phone { background: #ecfdf5; color: #10b981; }
 .dlv-tile-icon.truck { background: #fef2f2; color: #b91c1c; }
 .dlv-tile-icon.settings { background: #f5f3ff; color: #8b5cf6; }
@@ -167,7 +167,7 @@
 .dlv-earnings-preview {
   font-size: 15px;
   font-weight: 800;
-  color: #1A4D2E;
+  color: var(--z-green);
   margin-right: 4px;
 }
 

@@ -94,7 +94,7 @@
   top: 20px;
   left: 50%;
   transform: translateX(-50%);
-  background: #1A4D2E;
+  background: var(--z-green);
   color: white;
   padding: 12px 24px;
   border-radius: 16px;
@@ -263,7 +263,7 @@
   align-items: flex-end;
   margin-bottom: 16px;
 }
-.o-amount { font-size: 20px; font-weight: 800; color: #1A4D2E; }
+.o-amount { font-size: 20px; font-weight: 800; color: var(--z-green); }
 .o-date { font-size: 13px; color: hsl(var(--z-slate-600)); font-weight: 500; }
 
 .btn-o {
@@ -352,7 +352,7 @@
   padding: 14px;
   border-radius: 14px;
   border: none;
-  background: #1A4D2E;
+  background: var(--z-green);
   color: white;
   font-weight: 800;
   cursor: pointer;

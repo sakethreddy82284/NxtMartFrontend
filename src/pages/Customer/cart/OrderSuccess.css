@@ -32,7 +32,7 @@
 }
 
 .success-icon {
-  color: #1A4D2E; /* Forest Green */
+  color: var(--z-green); /* Forest Green */
   animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
@@ -93,7 +93,7 @@
 }
 
 .delivery-info-mini svg {
-  color: #1A4D2E;
+  color: var(--z-green);
 }
 
 .delivery-label {
@@ -131,26 +131,26 @@
 .piece-4 { left: 50%; animation: fall 4.5s infinite linear; background: #FF4500; }
 .piece-5 { left: 60%; animation: fall 3.8s infinite linear; background: #32CD32; }
 .piece-6 { left: 70%; animation: fall 4.2s infinite linear; background: #FF69B4; }
-.piece-7 { left: 80%; animation: fall 3.6s infinite linear; background: #1A4D2E; }
+.piece-7 { left: 80%; animation: fall 3.6s infinite linear; background: var(--z-green); }
 .piece-8 { left: 90%; animation: fall 4.8s infinite linear; background: #FFD700; }
 .piece-9 { left: 5%; animation: fall 3.1s infinite linear; background: #FF4500; }
 .piece-10 { left: 15%; animation: fall 3.9s infinite linear; background: #00BAF2; }
 .piece-11 { left: 25%; animation: fall 4.1s infinite linear; background: #32CD32; }
 .piece-12 { left: 35%; animation: fall 3.3s infinite linear; background: #FF69B4; }
-.piece-13 { left: 45%; animation: fall 4.6s infinite linear; background: #1A4D2E; }
+.piece-13 { left: 45%; animation: fall 4.6s infinite linear; background: var(--z-green); }
 .piece-14 { left: 55%; animation: fall 3.7s infinite linear; background: #FFD700; }
 .piece-15 { left: 65%; animation: fall 4.3s infinite linear; background: #FF4500; }
 .piece-16 { left: 75%; animation: fall 3.4s infinite linear; background: #00BAF2; }
 .piece-17 { left: 85%; animation: fall 4.7s infinite linear; background: #32CD32; }
 .piece-18 { left: 95%; animation: fall 4.0s infinite linear; background: #FF69B4; }
-.piece-19 { left: 50%; animation: fall 3.5s infinite linear; background: #1A4D2E; }
+.piece-19 { left: 50%; animation: fall 3.5s infinite linear; background: var(--z-green); }
 
 .animate-slide-up {
   animation: slideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .action-btn.primary {
-  background: #1A4D2E;
+  background: var(--z-green);
   color: white;
 }
 

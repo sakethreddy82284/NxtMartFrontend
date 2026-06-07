@@ -23,7 +23,7 @@
   font-family: 'Syne', sans-serif;
   font-size: 24px;
   font-weight: 800;
-  color: #1A4D2E;
+  color: var(--z-green);
   margin: 0;
 }
 
@@ -84,7 +84,7 @@
   font-family: 'Syne', sans-serif;
   font-size: 20px;
   font-weight: 800;
-  color: #1A4D2E;
+  color: var(--z-green);
   margin: 0;
 }
 
@@ -107,13 +107,13 @@
 }
 
 .stat-pill b {
-  color: #1A4D2E;
+  color: var(--z-green);
   font-size: 14px;
   margin-right: 4px;
 }
 
 .stat-pill.highlight {
-  background: #1A4D2E;
+  background: var(--z-green);
   color: white;
   border: none;
 }
@@ -205,7 +205,7 @@
   width: 100%;
   margin-top: 20px;
   padding: 16px;
-  background: #1A4D2E;
+  background: var(--z-green);
   color: white;
   border: none;
   border-radius: 16px;
@@ -230,7 +230,7 @@
   transition: all 0.2s;
 }
 
-.action-btn.out { background: #1A4D2E; color: white; }
+.action-btn.out { background: var(--z-green); color: white; }
 .action-btn.deliver { background: #22C55E; color: white; }
 
 .status-waiting {
@@ -254,7 +254,7 @@
 }
 
 .empty-icon {
-  color: #1A4D2E;
+  color: var(--z-green);
   opacity: 0.1;
   margin-bottom: 16px;
 }

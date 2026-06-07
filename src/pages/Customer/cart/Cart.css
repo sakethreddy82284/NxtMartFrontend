@@ -319,7 +319,7 @@
 /* Checkout Button */
 .m-checkout-btn {
   width: 100%;
-  background: linear-gradient(135deg, #1A4D2E 0%, #153d25 100%);
+  background: linear-gradient(135deg, var(--z-green) 0%, #153d25 100%);
   color: white;
   border: none;
   padding: 16px 24px;
@@ -672,7 +672,7 @@
 .pay-brand span {
   font-weight: 700;
   font-size: 16px;
-  color: #1A4D2E;
+  color: var(--z-green);
   letter-spacing: -0.2px;
 }
 
@@ -706,7 +706,7 @@
   font-size: 42px;
   font-weight: 800;
   margin: 0;
-  color: #1A4D2E;
+  color: var(--z-green);
   letter-spacing: -1px;
 }
 
@@ -761,7 +761,7 @@
 }
 
 .vpa-pill button {
-  color: #1A4D2E;
+  color: var(--z-green);
   font-weight: 700;
   background: none;
   border: none;
@@ -781,7 +781,7 @@
 
 .confirm-pay-btn {
   width: 100%;
-  background: #1A4D2E;
+  background: var(--z-green);
   color: white;
   padding: 18px;
   border-radius: 12px;
@@ -936,7 +936,7 @@
 
 .verify-pay-btn {
   width: 100%;
-  background: #1A4D2E;
+  background: var(--z-green);
   color: white;
   border: none;
   padding: 16px;
