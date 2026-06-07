@@ -146,7 +146,7 @@
 /* Main Navbar */
 .nb-main {
   background: var(--white);
-  border-bottom: 1px solid rgba(124, 58, 237, 0.08);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .nb-container {
@@ -176,19 +176,19 @@
   width: 42px;
   height: 42px;
   border-radius: var(--r-lg);
-  background: linear-gradient(135deg, var(--z-purple), var(--z-violet));
+  background: linear-gradient(135deg, var(--z-green), var(--z-green-light));
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--white);
-  box-shadow: var(--shadow-purple);
+  box-shadow: var(--shadow-green);
   flex-shrink: 0;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .nb-brand:hover .nb-logo-wrap {
   transform: scale(1.06) rotate(-4deg);
-  box-shadow: 0 6px 22px rgba(124, 58, 237, 0.3);
+  box-shadow: 0 6px 22px rgba(26, 77, 46, 0.3);
 }
 
 .nb-brand-info {
@@ -213,9 +213,9 @@
   color: #1e293b;
   font-size: 9px;
   font-weight: 800;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
-  padding: 2px 8px;
+  padding: 4px 10px;
   border-radius: var(--r-pill);
   width: fit-content;
 }
@@ -224,7 +224,7 @@
 .nb-search-row {
   order: 3; /* Move to bottom on mobile */
   width: 100%;
-  padding: 8px 0 16px;
+  padding: 8px 16px 16px;
   display: flex;
   justify-content: center;
   background: var(--white);
@@ -236,7 +236,7 @@
   max-width: 100%;
   align-items: center;
   height: 52px;
-  background: #f8fafc;
+  background: #ffffff;
   border: 1.5px solid #e2e8f0;
   border-radius: 26px;
   overflow: hidden;
@@ -251,7 +251,7 @@
 }
 
 .nb-search-bar.nb-search-active .nb-search-icon-wrap {
-  color: var(--z-purple);
+  color: var(--z-green);
 }
 
 .nb-search-icon-wrap {
@@ -279,7 +279,7 @@
 }
 
 .nb-search-input::placeholder {
-  color: #c4bbd9;
+  color: #c4b5fd;
 }
 
 .nb-search-btn {
@@ -327,17 +327,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--z-green);
+  color: var(--t1);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .nb-cart-btn:hover {
-  background: var(--surface-3);
-  border-color: var(--z-purple);
-  color: var(--z-purple);
+  background: #e2e8f0;
+  border-color: #cbd5e1;
+  color: var(--t1);
   transform: scale(1.06);
-  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.12);
+  box-shadow: var(--shadow-sm);
 }
 
 .nb-cart-btn:active {
@@ -348,21 +348,21 @@
   position: absolute;
   top: -6px;
   right: -6px;
-  min-width: 18px;
-  height: 18px;
+  min-width: 20px;
+  height: 20px;
   padding: 0 4px;
-  background: #EA580C;
-  color: #ffffff;
+  background: #ffffff;
+  color: #64748b;
   font-family: var(--ff);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 800;
-  border-radius: 9px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1.5px solid #ffffff;
+  border: 1px solid #e2e8f0;
   pointer-events: none;
-  box-shadow: 0 2px 6px rgba(234, 88, 12, 0.4);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 .nb-user-profile-link {
@@ -389,7 +389,8 @@
 
 .nb-user-circle:hover {
   transform: scale(1.05);
-  box-shadow: 0 6px 16px rgba(154, 52, 18, 0.3);
+  background: var(--z-green-mid);
+  box-shadow: 0 6px 16px rgba(17, 94, 52, 0.3);
 }
 
 .nb-user-circle:active {
@@ -399,7 +400,7 @@
 /* Category Pills */
 .nb-categories {
   background: var(--white);
-  border-top: 1px solid rgba(124, 58, 237, 0.06);
+  border-top: 1px solid rgba(26, 77, 46, 0.06);
   padding: 8px 20px 12px;
   display: flex;
   gap: 8px;
@@ -412,7 +413,7 @@
   height: 32px;
   padding: 0 14px;
   border-radius: var(--r-pill);
-  border: 1.5px solid rgba(124, 58, 237, 0.18);
+  border: 1.5px solid rgba(26, 77, 46, 0.18);
   background: var(--white);
   font-family: var(--ff);
   font-size: 13px;
@@ -427,15 +428,15 @@
 }
 
 .nb-cat-pill:hover {
-  border-color: var(--z-purple);
+  border-color: var(--z-green);
   background: var(--z-pale);
-  color: var(--z-purple);
+  color: var(--z-green);
 }
 
 .nb-cat-pill.active {
-  background: var(--z-purple);
+  background: var(--z-green);
   color: var(--white);
-  border-color: var(--z-purple);
+  border-color: var(--z-green);
 }
 
 /* Mobile Search Row */

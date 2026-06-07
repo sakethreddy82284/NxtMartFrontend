@@ -8,12 +8,12 @@ const Onboarding = () => {
   return (
     <div className="onboarding-container">
       <div className="onboarding-image">
-        <img src="https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?q=80&w=600&auto=format&fit=crop" alt="Onboarding" />
+        <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80&w=600&auto=format&fit=crop" alt="Onboarding" />
       </div>
       
       <div className="onboarding-content">
-        <h1>Premium Tech from NxtMart</h1>
-        <p>Get the latest laptops, smartphones, and accessories delivered directly to your doorstep in minutes.</p>
+        <h1>Fresh Groceries from NxtMart</h1>
+        <p>Handpicked local produce delivered fresh from NxtMart nearby farms to you.</p>
         
         <div className="onboarding-dots">
           <span className="dot active"></span>

@@ -38,7 +38,7 @@
 }
 
 .hero-slide.primary-green {
-  background: linear-gradient(135deg, #1A4D2E 0%, #34794B 100%);
+  background: linear-gradient(135deg, var(--z-green-mid) 0%, var(--z-green-light) 100%);
   box-shadow: 0 12px 30px rgba(26, 77, 46, 0.2);
 }
 
@@ -81,7 +81,7 @@
 
 .hero-cta {
   background: var(--white);
-  color: #1A4D2E;
+  color: var(--z-green);
   border: none;
   padding: 12px 24px;
   border-radius: 12px;
@@ -128,17 +128,18 @@
 }
 
 .header-title h3 {
-  font-family: var(--fd);
-  font-size: 20px;
+  font-family: var(--ff);
+  font-size: 22px;
   font-weight: 800;
   margin: 0;
-  color: var(--t1);
+  color: #0f172a;
+  letter-spacing: -0.02em;
 }
 
 .header-title p {
-  font-size: 13px;
-  color: var(--t3);
-  margin: 2px 0 0;
+  font-size: 14px;
+  color: #64748b;
+  margin: 4px 0 0;
 }
 
 .text-link {
@@ -276,11 +277,12 @@
 .promo-card.orange-tint { background: #FFEDD5; }
 
 .promo-text h4 {
-  font-family: var(--fd);
+  font-family: var(--ff);
   font-size: 16px;
   font-weight: 800;
   margin: 0;
   color: #1e293b;
+  letter-spacing: -0.02em;
 }
 
 .promo-text p {
@@ -296,6 +298,17 @@
   align-self: flex-end;
   margin-top: 10px;
 }
+
+.promo-icon {
+  width: 64px;
+  height: 64px;
+  align-self: flex-end;
+  margin-top: 10px;
+  opacity: 0.9;
+}
+
+.blue-tint .promo-icon { color: #0284C7; }
+.orange-tint .promo-icon { color: #EA580C; }
 
 .home-bottom-spacer {
   height: 120px;

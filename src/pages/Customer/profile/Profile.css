@@ -2,9 +2,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap');
 
 :root {
-  --z-purple: 262 83% 58%;    /* #7C3AED */
-  --z-purple-light: 262 83% 96%;
-  --z-green: 142 70% 45%;
+  --z-purple: 147 69% 22%;    /* #115e34 */
+  --z-purple-light: 147 69% 96%;
   --z-slate-900: 222 47% 11%;
   --z-slate-600: 215 16% 47%;
   --z-slate-100: 210 40% 96%;
@@ -34,7 +33,7 @@
 .avatar-huge {
   width: 110px;
   height: 110px;
-  background: linear-gradient(135deg, hsl(var(--z-purple)) 0%, #a78bfa 100%);
+  background: linear-gradient(135deg, hsl(var(--z-purple)) 0%, #22c55e 100%);
   color: white;
   border-radius: 36px; /* Squircle */
   display: flex;

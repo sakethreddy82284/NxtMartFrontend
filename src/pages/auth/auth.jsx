@@ -1,38 +1,22 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../components/Context/User";
+import axios from "axios";
 import { BASE_URL } from "../../config";
 import "./auth.css";
-import {
-  Mail,
-  Lock,
-  Eye,
-  EyeOff,
-  Smartphone,
-  Zap,
-  Leaf,
-  ShieldCheck,
-  Users,
-  Star,
-  RotateCcw,
-  User,
-  ArrowRight
-} from "lucide-react";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../components/Context/User";
 
-import techDevicesImg from "../../assets/tech_devices.png";
-import interiorBlurImg from "../../assets/interior_blur.png";
+const STRENGTH_LABELS = ["", "Weak", "Fair", "Good", "Strong"];
+const STRENGTH_COLORS = ["", "#ef4444", "#f59e0b", "#a855f7", "#7c3aed"];
 
 /* ─── Helpers ─── */
-const STRENGTH_LABELS = ["", "Weak", "Fair", "Good", "Strong"];
-const STRENGTH_COLORS = ["", "#ef4444", "#f59e0b", "#10b981", "#059669"];
-
 function getStrength(pw) {
   if (!pw) return 0;
   let s = 0;
-  if (pw.length >= 8) s++;
-  if (/[A-Z]/.test(pw)) s++;
-  if (/[0-9]/.test(pw)) s++;
-  if (/[^A-Za-z0-9]/.test(pw)) s++;
+  if (pw.length >= 8)           s++;
+  if (/[A-Z]/.test(pw))         s++;
+  if (/[0-9]/.test(pw))         s++;
+  if (/[^A-Za-z0-9]/.test(pw))  s++;
   return s;
 }
 
@@ -68,7 +52,7 @@ function EyeBtn({ show, onToggle }) {
       onClick={onToggle}
       aria-label="Toggle password visibility"
     >
-      {show ? <EyeOff size={16} /> : <Eye size={16} />}
+      {show ? "🙈" : "👁"}
     </button>
   );
 }
@@ -83,64 +67,27 @@ function BannerError({ msg }) {
   return <div className="zt-banner-err">⚠ {msg}</div>;
 }
 
-/* ─── Left Panel (Sidebar) ─── */
+/* ─── Left Panel ─── */
 function LeftPanel() {
   return (
     <div className="zt-left">
+      <div className="zt-left-overlay"></div>
+      
       {/* Brand */}
       <div className="zt-brand">
         <div className="zt-brand-mark">N</div>
-        <span className="zt-brand-name">NxtMart Tech</span>
+        <span className="zt-brand-name">NxtMart</span>
       </div>
 
-      {/* Hero Copy */}
+      {/* Hero copy */}
       <div className="zt-hero">
         <h1>
-          Tech & Gadgets<br />
-          <span className="zt-accent">in</span> minutes,<br />
-          not hours.
+          Fresh groceries,<br />
+          delivered fast.
         </h1>
-        <p className="zt-hero-desc">
-          Premium laptops, smartphones, audio gear, and accessories — delivered lightning-fast.
+        <p>
+          Experience the finest quality produce and daily essentials, brought to your door in minutes.
         </p>
-
-        {/* Feature List */}
-        <div className="zt-features">
-          <div className="zt-feature-item">
-            <div className="zt-feature-icon-wrap">
-              <Zap size={16} />
-            </div>
-            <div>
-              <div className="zt-feature-title">Instant Delivery</div>
-              <div className="zt-feature-sub">Ultra-fast local delivery of tech essentials</div>
-            </div>
-          </div>
-
-          <div className="zt-feature-item">
-            <div className="zt-feature-icon-wrap">
-              <Smartphone size={16} />
-            </div>
-            <div>
-              <div className="zt-feature-title">Certified Authentic</div>
-              <div className="zt-feature-sub">100% genuine products with brand warranty</div>
-            </div>
-          </div>
-
-          <div className="zt-feature-item">
-            <div className="zt-feature-icon-wrap">
-              <ShieldCheck size={16} />
-            </div>
-            <div>
-              <div className="zt-feature-title">Secure Purchase</div>
-              <div className="zt-feature-sub">Safe payments & hassle-free returns</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Bottom Basket Image */}
-      <div className="zt-left-image-wrap">
-        <img src={techDevicesImg} alt="Tech Devices" className="zt-left-image" />
       </div>
     </div>
   );
@@ -148,19 +95,19 @@ function LeftPanel() {
 
 /* ─── Login Form ─── */
 const LoginForm = ({ setView }) => {
-  const [email, setEmail] = useState("");
+  const [email,    setEmail]    = useState("");
   const [password, setPassword] = useState("");
   const [showPass, setShowPass] = useState(false);
   const [remember, setRemember] = useState(false);
-  const [errors, setErrors] = useState({});
-  const [loading, setLoading] = useState(false);
+  const [errors,   setErrors]   = useState({});
+  const [loading,  setLoading]  = useState(false);
   const navigate = useNavigate();
-  const { getUser } = useAuth();
+  const { getUser } = useAuth(); // Added
 
   const validate = () => {
     const e = {};
-    if (!email.trim()) e.phone = "Phone or email is required";
-    if (!password) e.password = "Password is required";
+    if (!email.trim()) e.phone    = "Phone or email is required";
+    if (!password)     e.password = "Password is required";
     return e;
   };
 
@@ -174,7 +121,7 @@ const LoginForm = ({ setView }) => {
       const res = await fetch(`${BASE_URL}/auth/signin`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        credentials: "include",
+        credentials: "include", 
         body: JSON.stringify({ email, password }),
       });
       const data = await res.json();
@@ -182,10 +129,10 @@ const LoginForm = ({ setView }) => {
         setErrors({ general: data.message || "Invalid credentials" });
         return;
       }
-
+      
       // Sync state with backend
       await getUser();
-
+      
       // Role-based navigation
       const role = data.user.role;
       if (role === 'admin') navigate('/admin');
@@ -203,21 +150,22 @@ const LoginForm = ({ setView }) => {
   return (
     <form onSubmit={handleSubmit} noValidate>
       <div className="zt-form-head">
-        <h2 className="zt-form-title">Welcome back 👋</h2>
-        <p className="zt-form-sub">Sign in to continue to your account</p>
+        <div className="zt-eyebrow">Welcome back 👋</div>
+        <h2 className="zt-form-title">Sign in to NxtMart</h2>
+        <p className="zt-form-sub">Your cart is waiting for you.</p>
       </div>
 
       <BannerError msg={errors.general} />
 
       <div className="zt-field">
-        <label className="zt-label" htmlFor="zt-phone">Email address</label>
+        <label className="zt-label" htmlFor="zt-phone"> Email</label>
         <div className="zt-input-wrap">
-          <Mail className="zt-icon" size={16} />
+          <span className="zt-icon">📱</span>
           <input
             id="zt-phone"
             className={`zt-input${errors.phone ? " error" : ""}`}
             type="text"
-            placeholder="you@example.com"
+            placeholder="+91 98765 43210 or you@email.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             autoComplete="username"
@@ -229,12 +177,12 @@ const LoginForm = ({ setView }) => {
       <div className="zt-field">
         <label className="zt-label" htmlFor="zt-pass">Password</label>
         <div className="zt-input-wrap">
-          <Lock className="zt-icon" size={16} />
+          <span className="zt-icon">🔐</span>
           <input
             id="zt-pass"
             className={`zt-input${errors.password ? " error" : ""}`}
             type={showPass ? "text" : "password"}
-            placeholder="Enter your password"
+            placeholder="Enter password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             autoComplete="current-password"
@@ -253,7 +201,13 @@ const LoginForm = ({ setView }) => {
           />
           <span>Remember me</span>
         </label>
-        <button type="button" className="zt-forgot">Forgot password?</button>
+        <button 
+          type="button" 
+          className="zt-forgot"
+          onClick={() => alert("Password reset instructions have been sent to your email.")}
+        >
+          Forgot password?
+        </button>
       </div>
 
       <button className="zt-cta" type="submit" disabled={loading}>
@@ -262,35 +216,15 @@ const LoginForm = ({ setView }) => {
         ) : (
           <>
             <span>Sign In</span>
-            <ArrowRight size={16} className="zt-cta-arrow" />
+            <span className="zt-cta-arrow">→</span>
           </>
         )}
       </button>
 
-      <div className="zt-divider">
-        <div className="zt-div-line" />
-        <span>or</span>
-        <div className="zt-div-line" />
-      </div>
 
-      {/* Social Buttons */}
-      <button type="button" className="zt-social-btn zt-google-btn">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
-          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
-          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05" />
-          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
-        </svg>
-        <span>Continue with Google</span>
-      </button>
-
-      <button type="button" className="zt-social-btn zt-otp-btn">
-        <Smartphone size={18} />
-        <span>Login with OTP</span>
-      </button>
 
       <p className="zt-switch">
-        New to NxtMart Tech?&nbsp;
+        New to NxtMart?&nbsp;
         <button type="button" onClick={() => setView("signup")}>
           Create account
         </button>
@@ -301,16 +235,17 @@ const LoginForm = ({ setView }) => {
 
 /* ─── Signup Form ─── */
 function SignupForm({ setView }) {
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirm, setConfirm] = useState("");
-  const [showPass, setShowPass] = useState(false);
+  const [name,        setName]        = useState("");
+  const [phone,       setPhone]       = useState("");
+  const [email,       setEmail]       = useState("");
+  const [password,    setPassword]    = useState("");
+  const [confirm,     setConfirm]     = useState("");
+  const [role,        setRole]        = useState("customer");
+  const [showPass,    setShowPass]    = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
-  const [agreed, setAgreed] = useState(false);
-  const [errors, setErrors] = useState({});
-  const [loading, setLoading] = useState(false);
+  const [agreed,      setAgreed]      = useState(false);
+  const [errors,      setErrors]      = useState({});
+  const [loading,     setLoading]     = useState(false);
   const { getUser } = useAuth();
   const navigate = useNavigate();
 
@@ -321,16 +256,16 @@ function SignupForm({ setView }) {
     } else if (!/^[A-Za-z\s]+$/.test(name)) {
       e.name = "Name must contain only letters";
     }
-
+    
     if (!phone.trim()) {
       e.phone = "Phone is required";
     } else if (!/^[6-9]\d{9}$/.test(phone)) {
       e.phone = "Enter a valid 10-digit Indian phone number";
     }
 
-    if (!email.trim()) e.email = "Email is required";
-    else if (!/\S+@\S+\.\S+/.test(email)) e.email = "Enter a valid email";
-
+    if (!email.trim())                         e.email    = "Email is required";
+    else if (!/\S+@\S+\.\S+/.test(email))      e.email    = "Enter a valid email";
+    
     if (!password) {
       e.password = "Password is required";
     } else if (password.length < 8) {
@@ -339,8 +274,8 @@ function SignupForm({ setView }) {
       e.password = "Must include Uppercase, Lowercase, Number & Special Char";
     }
 
-    if (password !== confirm) e.confirm = "Passwords do not match";
-    if (!agreed) e.terms = "Please agree to continue";
+    if (password !== confirm)                  e.confirm  = "Passwords do not match";
+    if (!agreed)                               e.terms    = "Please agree to continue";
     return e;
   };
 
@@ -354,13 +289,14 @@ function SignupForm({ setView }) {
       const res = await fetch(`${BASE_URL}/auth/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, phone, password }),
+        body: JSON.stringify({ name, email, phone, password, role }),
       });
       const data = await res.json();
       if (!res.ok) {
         setErrors(data.errors || { general: data.message || "Something went wrong" });
         return;
       }
+      // Sync state with backend (since backend sets cookie during signup)
       await getUser();
       navigate('/');
     } catch (err) {
@@ -374,6 +310,7 @@ function SignupForm({ setView }) {
   return (
     <form onSubmit={handleSubmit} noValidate>
       <div className="zt-form-head">
+        <div className="zt-eyebrow">Get started 🚀</div>
         <h2 className="zt-form-title">Create account</h2>
         <p className="zt-form-sub">Join 10 million+ happy customers.</p>
       </div>
@@ -383,7 +320,7 @@ function SignupForm({ setView }) {
       <div className="zt-field">
         <label className="zt-label" htmlFor="su-name">Name</label>
         <div className="zt-input-wrap">
-          <User className="zt-icon" size={16} />
+          <span className="zt-icon">👤</span>
           <input
             id="su-name"
             className={`zt-input${errors.name ? " error" : ""}`}
@@ -400,7 +337,7 @@ function SignupForm({ setView }) {
       <div className="zt-field">
         <label className="zt-label" htmlFor="su-phone">Phone number</label>
         <div className="zt-input-wrap">
-          <Smartphone className="zt-icon" size={16} />
+          <span className="zt-icon">📱</span>
           <input
             id="su-phone"
             className={`zt-input${errors.phone ? " error" : ""}`}
@@ -417,7 +354,7 @@ function SignupForm({ setView }) {
       <div className="zt-field">
         <label className="zt-label" htmlFor="su-email">Email address</label>
         <div className="zt-input-wrap">
-          <Mail className="zt-icon" size={16} />
+          <span className="zt-icon">✉️</span>
           <input
             id="su-email"
             className={`zt-input${errors.email ? " error" : ""}`}
@@ -434,7 +371,7 @@ function SignupForm({ setView }) {
       <div className="zt-field">
         <label className="zt-label" htmlFor="su-pass">Password</label>
         <div className="zt-input-wrap">
-          <Lock className="zt-icon" size={16} />
+          <span className="zt-icon">🔐</span>
           <input
             id="su-pass"
             className={`zt-input${errors.password ? " error" : ""}`}
@@ -453,7 +390,7 @@ function SignupForm({ setView }) {
       <div className="zt-field">
         <label className="zt-label" htmlFor="su-confirm">Confirm password</label>
         <div className="zt-input-wrap">
-          <Lock className="zt-icon" size={16} />
+          <span className="zt-icon">🔐</span>
           <input
             id="su-confirm"
             className={`zt-input${errors.confirm ? " error" : ""}`}
@@ -466,6 +403,23 @@ function SignupForm({ setView }) {
           <EyeBtn show={showConfirm} onToggle={() => setShowConfirm((v) => !v)} />
         </div>
         <FieldError msg={errors.confirm} />
+      </div>
+
+      <div className="zt-field">
+        <label className="zt-label" htmlFor="su-role">Account Type</label>
+        <div className="zt-input-wrap">
+          <span className="zt-icon">🏢</span>
+          <select
+            id="su-role"
+            className="zt-input"
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+          >
+            <option value="customer">Customer</option>
+            <option value="manager">Store Manager</option>
+            <option value="delivery">Delivery Partner</option>
+          </select>
+        </div>
       </div>
 
       <label className="zt-terms">
@@ -489,7 +443,7 @@ function SignupForm({ setView }) {
         ) : (
           <>
             <span>Create Account</span>
-            <ArrowRight size={16} className="zt-cta-arrow" />
+            <span className="zt-cta-arrow">→</span>
           </>
         )}
       </button>
@@ -511,7 +465,7 @@ export default function AuthPage() {
   // Redirect if already logged in
   useEffect(() => {
     if (!loading && user) {
-      navigate('/');
+      navigate('/'); 
     }
   }, [user, loading, navigate]);
 
@@ -519,67 +473,18 @@ export default function AuthPage() {
     <div className="zt-page">
       <LeftPanel />
 
-      <div className="zt-right" style={{ backgroundImage: `url(${interiorBlurImg})` }}>
+      <div className="zt-right">
         {/* Mobile-only brand */}
         <div className="zt-mobile-brand">
           <div className="zt-mobile-mark">N</div>
-          <span className="zt-mobile-name">NxtMart Tech</span>
-        </div>
-
-        {/* Top Right Promise badge */}
-        <div className="zt-promise-badge">
-          <div className="zt-promise-icon">⚡</div>
-          <span>Lightning-fast delivery in <strong>10 minutes</strong></span>
+          <span className="zt-mobile-name">NxtMart</span>
         </div>
 
         <div className="zt-card">
-          {/* Tab switcher */}
-          <div className="zt-tabs">
-            <button
-              type="button"
-              className={`zt-tab${view === "login" ? " active" : ""}`}
-              onClick={() => setView("login")}
-            >
-              Sign In
-            </button>
-            <button
-              type="button"
-              className={`zt-tab${view === "signup" ? " active" : ""}`}
-              onClick={() => setView("signup")}
-            >
-              Sign Up
-            </button>
-          </div>
-
           {view === "login"
-            ? <LoginForm setView={setView} />
+            ? <LoginForm  setView={setView} />
             : <SignupForm setView={setView} />
           }
-        </div>
-
-        {/* Stats Section on the right column bottom */}
-        <div className="zt-stats-bottom">
-          <div className="zt-stat-bottom-item">
-            <Users className="zt-stat-bottom-icon" size={20} />
-            <div>
-              <div className="zt-stat-bottom-num">1M+</div>
-              <div className="zt-stat-bottom-label">Devices Delivered</div>
-            </div>
-          </div>
-          <div className="zt-stat-bottom-item">
-            <Star className="zt-stat-bottom-icon" size={20} />
-            <div>
-              <div className="zt-stat-bottom-num">4.8 ★</div>
-              <div className="zt-stat-bottom-label">App Rating</div>
-            </div>
-          </div>
-          <div className="zt-stat-bottom-item">
-            <RotateCcw className="zt-stat-bottom-icon" size={20} />
-            <div>
-              <div className="zt-stat-bottom-num">Brand Warranty</div>
-              <div className="zt-stat-bottom-label">1-Year official warranty</div>
-            </div>
-          </div>
         </div>
       </div>
     </div>

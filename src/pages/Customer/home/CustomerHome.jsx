@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { 
   Search, MapPin, Bell, Gift, ChevronRight, 
   Clock, TrendingUp, Star, Filter, ArrowRight,
-  Timer, ShoppingBag, Zap
+  Timer, ShoppingBag, Zap, Milk, Cookie
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import './CustomerHome.css';
@@ -71,14 +71,14 @@ const CustomerHome = () => {
                   <Zap size={12} fill="currentColor" />
                   <span>Flash Sale Live</span>
                 </div>
-                <h2>Up to 40% Off on Top Tech</h2>
-                <p>Premium laptops, smartphones, and accessories delivered in minutes.</p>
+                <h2>Up to 50% Off on Fresh Veggies</h2>
+                <p>Straight from farms to your doorstep in 10 minutes.</p>
                 <button className="hero-cta" onClick={() => navigate('/categories')}>
-                  Shop Now <ArrowRight size={16} />
+                  Order Now <ArrowRight size={16} />
                 </button>
               </div>
               <div className="slide-visual">
-                <img src="https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?q=80&w=400&auto=format&fit=crop" alt="Tech Gadgets" />
+                <img src="https://images.unsplash.com/photo-1610348725531-843dff563e2c?q=80&w=400&auto=format&fit=crop" alt="Vegetables" />
               </div>
             </div>
           </div>
@@ -102,17 +102,17 @@ const CustomerHome = () => {
         <section className="home-promo-grid animate-fade-up stagger-2">
           <div className="promo-card blue-tint">
             <div className="promo-text">
-              <h4>Smartphones</h4>
-              <p>Latest releases</p>
+              <h4>Dairy & Eggs</h4>
+              <p>Freshly stocked</p>
             </div>
-            <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=200&auto=format&fit=crop" alt="Smartphones" />
+            <Milk className="promo-icon" strokeWidth={1.5} />
           </div>
           <div className="promo-card orange-tint">
             <div className="promo-text">
-              <h4>Laptops</h4>
-              <p>High performance</p>
+              <h4>Munchies</h4>
+              <p>Weekend snacks</p>
             </div>
-            <img src="https://images.unsplash.com/photo-1496181130204-7552cc1524e2?q=80&w=200&auto=format&fit=crop" alt="Laptops" />
+            <Cookie className="promo-icon" strokeWidth={1.5} />
           </div>
         </section>
 

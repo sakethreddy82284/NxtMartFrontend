@@ -27,7 +27,7 @@
   gap: 4px;
   background: none;
   border: none;
-  color: #7C3AED;
+  color: var(--z-green);
   font-weight: 600;
   font-size: 14px;
   padding: 0;
@@ -65,7 +65,7 @@
   gap: 8px;
   padding: 16px 0;
   border-bottom: 1px solid #F0F0F0;
-  color: #7C3AED;
+  color: var(--z-green);
   font-size: 13px;
 }
 
@@ -154,7 +154,7 @@
 .m-qty {
   display: flex;
   align-items: center;
-  background: #7C3AED;
+  background: var(--z-green);
   color: white;
   border-radius: 8px;
   padding: 2px;
@@ -187,7 +187,7 @@
   padding: 20px;
   margin-bottom: 16px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-  border-left: 4px solid #7C3AED;
+  border-left: 4px solid var(--z-green);
 }
 
 .m-card-head {
@@ -212,12 +212,12 @@
   color: #1F1F1F;
 }
 
-.m-icon-pin { color: #7C3AED; }
+.m-icon-pin { color: var(--z-green); }
 
 .m-edit-btn {
   background: #F1F5F9;
   border: none;
-  color: #7C3AED;
+  color: var(--z-green);
   padding: 4px 12px;
   border-radius: 8px;
   font-size: 12px;
@@ -285,7 +285,7 @@
 }
 
 .m-free {
-  color: #7C3AED;
+  color: var(--z-green);
   font-weight: 600;
 }
 
@@ -420,12 +420,12 @@
   resize: none;
   outline: none;
 }
-.m-modal-body textarea:focus { border-color: #7C3AED; }
+.m-modal-body textarea:focus { border-color: var(--z-green); }
 
 .m-modal-footer { padding: 16px 20px 24px; }
 .m-save-addr-btn {
   width: 100%;
-  background: #7C3AED;
+  background: var(--z-green);
   color: white;
   border: none;
   padding: 14px;
@@ -455,7 +455,7 @@
 }
 
 .m-shop-btn {
-  background: #7C3AED;
+  background: var(--z-green);
   color: white;
   border: none;
   padding: 12px 32px;
@@ -503,7 +503,7 @@
 }
 
 .m-pay-opt.active {
-  border-color: #7C3AED;
+  border-color: var(--z-green);
   background: #F5F3FF;
 }
 
@@ -512,7 +512,7 @@
 }
 
 .m-pay-opt.active svg {
-  color: #7C3AED;
+  color: var(--z-green);
 }
 
 .opt-txt h4 {
@@ -958,7 +958,7 @@
   font-family: 'Syne', sans-serif;
   font-size: 24px;
   font-weight: 800;
-  color: #7C3AED;
+  color: var(--z-green);
   margin-bottom: 40px;
 }
 
@@ -971,7 +971,7 @@
 }
 
 .spin-icon {
-  color: #7C3AED;
+  color: var(--z-green);
   animation: spin 1s linear infinite;
 }
 

@@ -90,8 +90,8 @@ export default function Navbar({ hideSearch = false }) {
             aria-label="NxtMart home"
           >
             <div className="nb-brand-info">
-              <span className="nb-brand-name">NxtMart Tech</span>
-              <span className="nb-brand-sub">tech • express</span>
+              <span className="nb-brand-name">NxtMart</span>
+              <span className="nb-brand-sub">grocery • 10 min</span>
             </div>
           </Link>
 
@@ -106,7 +106,7 @@ export default function Navbar({ hideSearch = false }) {
                   placeholder={
                     user?.role === 'manager' ? "Search for products, orders..." : 
                     user?.role === 'delivery' ? "Search for pickup, orders..." : 
-                    "Search for laptops, phones, accessories..."
+                    "Search for groceries, snacks..."
                   }
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}

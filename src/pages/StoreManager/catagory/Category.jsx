@@ -6,11 +6,10 @@ import {
 } from 'lucide-react';
 import './category.css';
 import axios from 'axios';
+import { BASE_URL } from '../../../config';
 
 // ─────────────────────────────────────────────
 // Helpers
-const BASE_URL = 'https://nxtmartbackend-2-q25g.onrender.com';
-// ─────────────────────────────────────────────
 const toastOpts = {
   success: { className: 'toast-success', iconTheme: { primary: '#166534', secondary: '#fff' } },
   error:   { className: 'toast-error',   iconTheme: { primary: '#991b1b', secondary: '#fff' } },

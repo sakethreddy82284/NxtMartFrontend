@@ -2,11 +2,11 @@
 @import './styles/animations.css';
 
 :root {
-  --z-green:      #1A4D2E;
-  --z-green-mid:  #153d25;
-  --z-green-light: #2d5a3f;
+  --z-green:      #245435;
+  --z-green-mid:  #1d452b;
+  --z-green-light: #2d6b42;
   --z-orange:     #EA580C;
-  --z-pale:       #F0FDF4;
+  --z-pale:       #f8fafc;
   --surface-2:    #FFFFFF;
   --surface-3:    #DCFCE7;
   --t1:           #111827;
