@@ -9,6 +9,7 @@ import './CustomerHome.css';
 import Categories from '../categories/categories';
 import StickyBottomNav from '../../../components/common/StickyBottomNav/StickyBottomNav';
 import Navbar from '../../../components/common/navbar/Navbar';
+import SiteFooter from '../../../components/common/footer/SiteFooter';
 
 import { BASE_URL } from '../../../config';
 const API_URL = BASE_URL;
@@ -116,6 +117,7 @@ const CustomerHome = () => {
           </div>
         </section>
 
+        <SiteFooter />
 
         <div className="home-bottom-spacer"></div>
       </main>

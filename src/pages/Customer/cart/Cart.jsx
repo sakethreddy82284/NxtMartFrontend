@@ -21,7 +21,7 @@ const Cart = () => {
   const [isPlacing, setIsPlacing] = useState(false);
   const [isEditingAddress, setIsEditingAddress] = useState(false);
   const [addressInput, setAddressInput] = useState(user?.address || '');
-  const [paymentMethod, setPaymentMethod] = useState('COD');
+  const [paymentMethod, setPaymentMethod] = useState('online');
   const [showPaymentGateway, setShowPaymentGateway] = useState(false);
   const [paymentStep, setPaymentStep] = useState('idle'); // idle, scanning, verifying
 
