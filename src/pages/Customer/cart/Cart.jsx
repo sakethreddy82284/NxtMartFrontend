@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useStatae, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useCart } from '../../../components/Context/CartContext.jsx';
 import { useAuth } from '../../../components/Context/User.jsx';
 import Navbar from '../../../components/common/navbar/Navbar.jsx';
@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { BASE_URL } from '../../../config.js';
 import './Cart.css';
 
 const Cart = () => {
@@ -32,7 +33,7 @@ const Cart = () => {
   const handleUpdateAddress = async (e) => {
     e?.preventDefault();
     try {
-      await axios.put('http://localhost:2000/auth/update-profile', 
+      await axios.put(`${BASE_URL}/auth/update-profile`, 
         { address: addressInput }, 
         { withCredentials: true }
       );

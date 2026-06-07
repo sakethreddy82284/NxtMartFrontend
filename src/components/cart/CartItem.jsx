@@ -1,7 +1,9 @@
 
+import { BASE_URL } from "../../config.js";
+
 export const addToCart = async (productId) => {
   try {
-    const res = await fetch("http://localhost:2000/cart", {
+    const res = await fetch(`${BASE_URL}/cart`, {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },

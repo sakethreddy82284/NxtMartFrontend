@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../../../components/Context/User';
 import Navbar from '../../../components/common/navbar/Navbar';
+import { BASE_URL } from '../../../config';
 import StickyBottomNav from '../../../components/common/StickyBottomNav/StickyBottomNav';
 import { 
   User, Mail, Phone, ShoppingBag, MapPin,
@@ -30,7 +31,7 @@ const Profile = ({ initialTab = 'profile' }) => {
 
   const fetchOrders = async () => {
     try {
-      const res = await axios.get('http://localhost:2000/orders/my-orders', { withCredentials: true });
+      const res = await axios.get(`${BASE_URL}/orders/my-orders`, { withCredentials: true });
       setOrders(res.data);
     } catch (err) {
       console.error("Fetch orders error:", err);
@@ -41,7 +42,7 @@ const Profile = ({ initialTab = 'profile' }) => {
     e.preventDefault();
     try {
       setIsSaving(true);
-      await axios.put('http://localhost:2000/auth/update-profile', 
+      await axios.put(`${BASE_URL}/auth/update-profile`, 
         { address: addressInput }, 
         { withCredentials: true }
       );

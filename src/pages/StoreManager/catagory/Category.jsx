@@ -9,6 +9,7 @@ import axios from 'axios';
 
 // ─────────────────────────────────────────────
 // Helpers
+const BASE_URL = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1' ? 'https://nxtmartbackend-2-q25g.onrender.com' : 'http://localhost:2000';
 // ─────────────────────────────────────────────
 const toastOpts = {
   success: { className: 'toast-success', iconTheme: { primary: '#166534', secondary: '#fff' } },
@@ -210,7 +211,7 @@ const CategoriesPage = () => {
   const fetchCategories = async () => {
     try {
       setLoading(true);
-      const res = await axios.get('http://localhost:2000/categories/');
+      const res = await axios.get(`${BASE_URL}/categories/`);
       setCategories(res.data.data);
     } catch (error) {
       console.error(error);
@@ -234,7 +235,7 @@ const CategoriesPage = () => {
   try {
     if (id) {
       await axios.put(
-        `http://localhost:2000/categories/${id}`,
+        `${BASE_URL}/categories/${id}`,
         {
           name: data.name,
           icon: data.image,
@@ -248,7 +249,7 @@ const CategoriesPage = () => {
 
     } else {
       await axios.post(
-        'http://localhost:2000/categories',
+        `${BASE_URL}/categories`,
         {
           name: data.name,
           icon: data.image,
@@ -274,7 +275,7 @@ const CategoriesPage = () => {
 
   const handleDeleteConfirm = async () => {
     try {
-      await axios.delete(`http://localhost:2000/categories/${toDelete._id}`,
+      await axios.delete(`${BASE_URL}/categories/${toDelete._id}`,
       {
         withCredentials: true
       }

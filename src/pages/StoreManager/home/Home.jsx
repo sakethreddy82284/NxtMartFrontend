@@ -13,7 +13,7 @@ import ManagerProfile from '../profile/ManagerProfile';
 import ManagerAnalytics from './ManagerAnalytics';
 import './ManagerHome.css';
 
-const BASE = 'http://localhost:2000';
+const BASE = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1' ? 'https://nxtmartbackend-2-q25g.onrender.com' : 'http://localhost:2000';
 
 export default function ManagerHome() {
   const { user, logout } = useAuth();

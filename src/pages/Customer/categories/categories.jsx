@@ -3,6 +3,7 @@ import './Categories.css'
 import { useNavigate } from "react-router-dom";
 import { Gift, Bell, Search } from "lucide-react";
 import StickyBottomNav from "../../../components/common/StickyBottomNav/StickyBottomNav";
+import { BASE_URL } from "../../../config.js";
 
 
 const FONT_LINK = document.createElement("link");
@@ -114,7 +115,7 @@ export default function Categories({ isHomeView = false }) {
   const fetchCategories = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:2000/categories");
+      const res = await fetch(`${BASE_URL}/categories`);
       const data = await res.json();
       setCategories(data.data);
     } catch (err) {

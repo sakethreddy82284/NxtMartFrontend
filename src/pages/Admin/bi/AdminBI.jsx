@@ -7,7 +7,7 @@ import {
 import { TrendingUp, PieChart as PieIcon, Zap } from 'lucide-react';
 import './AdminBI.css';
 
-const BASE = 'http://localhost:2000';
+const BASE = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1' ? 'https://nxtmartbackend-2-q25g.onrender.com' : 'http://localhost:2000';
 const COLORS = ['#7C3AED', '#EC4899', '#10B981', '#F59E0B', '#3B82F6'];
 
 export default function AdminBI() {
