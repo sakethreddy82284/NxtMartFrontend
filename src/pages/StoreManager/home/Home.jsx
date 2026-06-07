@@ -11,9 +11,8 @@ import ManagerOrders from '../orders/ManagerOrders';
 import Product from '../product/Product';
 import ManagerProfile from '../profile/ManagerProfile';
 import ManagerAnalytics from './ManagerAnalytics';
+import { BASE_URL } from '../../../config';
 import './ManagerHome.css';
-
-const BASE = 'https://nxtmartbackend-2-q25g.onrender.com';
 
 export default function ManagerHome() {
   const { user, logout } = useAuth();
@@ -30,7 +29,7 @@ export default function ManagerHome() {
   const fetchStats = async () => {
     try {
       setLoading(true);
-      const res = await axios.get(`${BASE}/orders/stats`, { withCredentials: true });
+      const res = await axios.get(`${BASE_URL}/orders/stats`, { withCredentials: true });
       setStats(res.data);
     } catch (err) {
       console.error("Failed to fetch stats", err);
