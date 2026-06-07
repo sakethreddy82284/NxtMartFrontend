@@ -1,0 +1,287 @@
+.wallet-root {
+  min-height: 100vh;
+  background-color: var(--z-pale);
+  padding-bottom: 40px;
+}
+
+.wallet-container {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.wallet-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.wallet-header h1 {
+  font-family: var(--fd);
+  font-size: 22px;
+  font-weight: 800;
+  margin: 0;
+  color: var(--t1);
+}
+
+.back-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  border: none;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  color: var(--t1);
+}
+
+/* Balance Card */
+.balance-card {
+  position: relative;
+  background: linear-gradient(135deg, #1A4D2E, #0d2b1a);
+  border-radius: 28px;
+  padding: 30px;
+  color: white;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(26, 77, 46, 0.2);
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.balance-bg-effect {
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 200px;
+  height: 200px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+  filter: blur(40px);
+}
+
+.balance-label {
+  font-size: 14px;
+  font-weight: 600;
+  opacity: 0.8;
+  letter-spacing: 0.5px;
+}
+
+.balance-amount {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.balance-amount h2 {
+  font-family: var(--fd);
+  font-size: 42px;
+  font-weight: 800;
+  margin: 0;
+}
+
+.balance-amount .currency {
+  font-size: 24px;
+  font-weight: 700;
+  opacity: 0.8;
+}
+
+.balance-sub {
+  font-size: 13px;
+  opacity: 0.7;
+  margin: 4px 0 0;
+}
+
+.add-money-btn {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.add-money-btn:hover {
+  background: white;
+  color: #1A4D2E;
+}
+
+/* Stats */
+.wallet-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.w-stat {
+  background: white;
+  padding: 16px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: var(--shadow-sm);
+}
+
+.ws-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ws-icon.up { background: #f0fdf4; color: #22c55e; }
+.ws-icon.down { background: #fef2f2; color: #ef4444; }
+
+.ws-lbl {
+  font-size: 11px;
+  color: var(--t3);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.ws-val {
+  font-size: 16px;
+  font-weight: 800;
+  margin: 0;
+  color: var(--t1);
+}
+
+/* Offers */
+.wallet-offers {
+  margin-bottom: 24px;
+}
+
+.offer-banner {
+  background: #fff7ed;
+  border: 1px solid #ffedd5;
+  padding: 16px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+}
+
+.gift-icon { color: #f97316; }
+
+.offer-info h4 {
+  font-size: 15px;
+  font-weight: 800;
+  margin: 0;
+  color: #9a3412;
+}
+
+.offer-info p {
+  font-size: 12px;
+  color: #c2410c;
+  margin: 2px 0 0;
+}
+
+/* History */
+.transaction-history {
+  background: white;
+  border-radius: 28px;
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+}
+
+.th-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.th-head h3 {
+  font-size: 16px;
+  font-weight: 800;
+  margin: 0;
+}
+
+.refresh-btn {
+  background: #f1f5f9;
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--t2);
+  cursor: pointer;
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.history-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.hi-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hi-icon.credit { background: #f0fdf4; color: #22c55e; }
+.hi-icon.debit { background: #f1f5f9; color: #64748b; }
+
+.hi-info {
+  flex: 1;
+}
+
+.hi-info h4 {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0;
+  color: var(--t1);
+}
+
+.hi-info span {
+  font-size: 12px;
+  color: var(--t3);
+}
+
+.hi-amount {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.hi-amount.credit { color: #22c55e; }
+.hi-amount.debit { color: var(--t1); }
+
+.security-note {
+  margin-top: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: var(--t3);
+  font-size: 11px;
+  font-weight: 600;
+}

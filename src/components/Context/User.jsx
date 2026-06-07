@@ -2,6 +2,8 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 
+import { BASE_URL } from "../../config";
+
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -10,7 +12,7 @@ export const AuthProvider = ({ children }) => {
 
   const getUser = async () => {
     try {
-      const res = await axios.get("http://localhost:2000/auth/me", {
+      const res = await axios.get(`${BASE_URL}/auth/me`, {
         withCredentials: true, // 🍪 cookies
       });
       setUser(res.data.user);
@@ -28,7 +30,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await axios.post("http://localhost:2000/auth/logout", {}, { withCredentials: true });
+      await axios.post(`${BASE_URL}/auth/logout`, {}, { withCredentials: true });
       setUser(null);
     } catch (err) {
       console.error("Logout error:", err);

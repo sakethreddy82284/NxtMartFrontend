@@ -1,42 +1,29 @@
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap');
+@import './styles/animations.css';
 
 :root {
-  --ff: 'DM Sans', sans-serif;
-  --fd: 'Syne', sans-serif;
-
-  /* 💎 Premium Green Theme */
   --z-green:      #1A4D2E;
   --z-green-mid:  #153d25;
   --z-green-light: #2d5a3f;
-
-  /* ⚡ Accent */
   --z-orange:     #EA580C;
-
-  /* 🎨 Backgrounds */
   --z-pale:       #F0FDF4;
   --surface-2:    #FFFFFF;
   --surface-3:    #DCFCE7;
-
-  /* 📝 Text */
   --t1:           #111827;
   --t2:           #4B5563;
   --t3:           #9CA3AF;
-
-  /* 🔲 Border */
   --border:       rgba(26, 77, 46, 0.08);
+  --white:        #ffffff;
 
-  /* 🌑 Shadows */
-  --shadow-xs:    0 1px 2px rgba(26, 77, 46, 0.05);
-  --shadow-sm:    0 2px 8px rgba(26, 77, 46, 0.06);
-  --shadow-green: 0 4px 16px rgba(26, 77, 46, 0.12);
-  --shadow-focus: 0 0 0 4px rgba(26, 77, 46, 0.1);
-
-  /* 🧩 Radius */
+  --ff: 'DM Sans', sans-serif;
+  --fd: 'Syne', sans-serif;
+  --shadow-xs:    0 1px 2px rgba(0, 0, 0, 0.1);
+  --shadow-sm:    0 2px 8px rgba(0, 0, 0, 0.15);
+  --shadow-green: 0 4px 16px rgba(0, 0, 0, 0.25);
+  --shadow-focus: 0 0 0 4px rgba(26, 77, 46, 0.3);
   --r-pill: 9999px;
   --r-lg:   16px;
   --r-md:   12px;
-
-  --white: #ffffff;
 }
 
 body {

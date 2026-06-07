@@ -44,6 +44,15 @@ export default function ManagerOrders() {
     }
   };
 
+  const handleStatusUpdate = async (orderId, newStatus) => {
+    try {
+      await axios.put(`${BASE}/orders/${orderId}/status`, { status: newStatus }, { withCredentials: true });
+      fetchData(); // Refresh
+    } catch (err) {
+      alert("Failed to update status");
+    }
+  };
+
   const unassignedOrders = orders.filter(o => o.status === 'pending');
   const activeOrders = orders.filter(o => o.status !== 'pending' && o.status !== 'delivered' && o.status !== 'cancelled');
 
@@ -154,6 +163,27 @@ export default function ManagerOrders() {
 
                 <div className="card-bottom">
                   <div className="price-tag small">₹{order.billDetails?.totalPayable || 0}</div>
+                  
+                  {/* --- NEW ACTION BUTTONS FOR MANAGER --- */}
+                  <div className="manager-actions">
+                    {order.status === 'confirmed' && (
+                      <button className="mgr-btn pack" onClick={() => handleStatusUpdate(order._id, 'packing')}>
+                        Start Packing
+                      </button>
+                    )}
+                    {order.status === 'packing' && (
+                      <button className="mgr-btn ready" onClick={() => handleStatusUpdate(order._id, 'ready')}>
+                        Mark as Ready
+                      </button>
+                    )}
+                    {(order.status === 'ready' || order.status === 'out-for-delivery') && (
+                      <div className="transit-wait">
+                        <Clock size={12} />
+                        <span>{order.status === 'ready' ? 'Waiting for pickup' : 'On the way'}</span>
+                      </div>
+                    )}
+                  </div>
+
                   <div className="progress-mini">
                     <div className={`progress-bar ${order.status}`}></div>
                   </div>

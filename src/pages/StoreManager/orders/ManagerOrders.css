@@ -266,3 +266,50 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ── MANAGER ACTIONS ── */
+.manager-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.mgr-btn {
+  padding: 8px 16px;
+  border-radius: 12px;
+  border: none;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: white;
+}
+
+.mgr-btn.pack {
+  background: #f59e0b;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+}
+
+.mgr-btn.pack:hover {
+  background: #d97706;
+  transform: translateY(-2px);
+}
+
+.mgr-btn.ready {
+  background: #3b82f6;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+}
+
+.mgr-btn.ready:hover {
+  background: #2563eb;
+  transform: translateY(-2px);
+}
+
+.transit-wait {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #94a3b8;
+  font-size: 12px;
+  font-weight: 600;
+}

@@ -4,14 +4,14 @@ import { useNavigate } from "react-router-dom";
 import { Gift, Bell, Search } from "lucide-react";
 import StickyBottomNav from "../../../components/common/StickyBottomNav/StickyBottomNav";
 
-/* ─── Fonts ─────────────────────────────────────────────────────────────── */
+
 const FONT_LINK = document.createElement("link");
 FONT_LINK.rel = "stylesheet";
 FONT_LINK.href =
   "https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap";
 document.head.appendChild(FONT_LINK);
 
-/* ─── Constants ──────────────────────────────────────────────────────────── */
+
 const PLACEHOLDER_SVG = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect width='200' height='200' fill='%23f3f4f6'/%3E%3Crect x='60' y='72' width='80' height='8' rx='4' fill='%23d1d5db'/%3E%3Crect x='72' y='88' width='56' height='8' rx='4' fill='%23d1d5db'/%3E%3Crect x='84' y='104' width='32' height='8' rx='4' fill='%23d1d5db'/%3E%3C/svg%3E`;
 
 const ACCENTS = [
@@ -26,12 +26,12 @@ function toTitleCase(str) {
     : "";
 }
 
-/* ─── Inject Styles ──────────────────────────────────────────────────────── */
 
 
 
 
-/* ─── CategoryCard ───────────────────────────────────────────────────────── */
+
+
 function CategoryCard({ category, index, onClick, listView, isNew }) {
   const [imgSrc, setImgSrc] = useState(category.icon || PLACEHOLDER_SVG);
   const accent = ACCENTS[index % ACCENTS.length];
@@ -39,16 +39,14 @@ function CategoryCard({ category, index, onClick, listView, isNew }) {
   const delay = Math.min(index * 40, 400);
 const navigate = useNavigate();
 
-const handleClick = (name) => {
-  navigate(`/customerProducts/${name}`, {
-    state: { name }
-  });
+const handleClick = (id) => {
+  navigate(`/customer/products/${id}`);
 };
   return (
     <div
       className="cat-card"
       style={{ "--card-accent": accent, animationDelay: `${delay}ms` }}
-      onClick={() => handleClick(name)}
+      onClick={() => handleClick(category._id)}
       role="button"
       tabIndex={0}
       onKeyDown={(e) => e.key === "Enter" && onClick?.(category)}
@@ -93,7 +91,7 @@ const handleClick = (name) => {
   );
 }
 
-/* ─── SkeletonCard ───────────────────────────────────────────────────────── */
+
 function SkeletonCard() {
   return (
     <div className="cat-card cat-card--skeleton">
@@ -105,7 +103,7 @@ function SkeletonCard() {
   );
 }
 
-/* ─── Main Component ─────────────────────────────────────────────────────── */
+
 export default function Categories({ isHomeView = false }) {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -165,7 +163,7 @@ export default function Categories({ isHomeView = false }) {
           <div 
             key={cat._id} 
             className="cat-card-modern"
-            onClick={() => navigate(`/customer/products/${cat._id}`)}
+            onClick={() => navigate(`/customer/products/${cat._id?.toString()}`)}
           >
             <div className="cat-img-container">
               <img src={cat.icon || PLACEHOLDER_SVG} alt={cat.name} />

@@ -8,19 +8,16 @@ import StickyBottomNav from "../../../components/common/StickyBottomNav/StickyBo
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useCart } from "../../../components/Context/CartContext";
 
-const API_URL = "http://localhost:2000";
+import { BASE_URL } from "../../../config";
+const API_URL = BASE_URL;
 
-/* ══════════════════════════════════════════
-   HELPERS
-   ══════════════════════════════════════════ */
+// Helpers
 const StockBadge = ({ stock }) => {
   if (stock === 0) return <span className="p-badge-v4 oos">Out of Stock</span>;
   return null;
 };
 
-/* ══════════════════════════════════════════
-   PRODUCT CARD COMPONENT
-   ══════════════════════════════════════════ */
+// Product Card Component
 const ProductCard = ({ product }) => {
   const { cart, addToCart, updateQuantity } = useCart();
   const oos = product.stock === 0;
@@ -32,11 +29,22 @@ const ProductCard = ({ product }) => {
   );
   const quantity = cartItem ? cartItem.quantity : 0;
 
+  const navigate = useNavigate();
+
   return (
     <div className={`p-card-v4 ${oos ? 'oos-fade' : ''}`}>
-      <div className="p-img-box-v4">
+      <div className="p-img-box-v4" onClick={() => navigate(`/product/${product._id}`)} style={{ cursor: 'pointer' }}>
         {product.image ? (
-          <img src={product.image} alt={product.name} className="p-img" loading="lazy" />
+          <img 
+            src={product.image} 
+            alt={product.name} 
+            className="p-img" 
+            loading="lazy" 
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = "https://images.unsplash.com/photo-1610348725531-843dff563e2c?w=400&auto=format"; // Default Grocery Placeholder
+            }}
+          />
         ) : (
           <div className="p-no-img"><ShoppingBag size={32} /></div>
         )}
@@ -44,13 +52,15 @@ const ProductCard = ({ product }) => {
       </div>
 
       <div className="p-info-v4">
-        <div className="p-delivery-badge">
-          <Timer size={12} />
-          <span>{deliveryTime}</span>
-        </div>
+        <div onClick={() => navigate(`/product/${product._id}`)} style={{ cursor: 'pointer' }}>
+          <div className="p-delivery-badge">
+            <Timer size={12} />
+            <span>{deliveryTime}</span>
+          </div>
 
-        <h3 className="p-name-v4">{product.name}</h3>
-        <p className="p-pack-v4">{packSize}</p>
+          <h3 className="p-name-v4">{product.name}</h3>
+          <p className="p-pack-v4">{packSize}</p>
+        </div>
         
         <div className="p-footer-v4">
           <div className="p-price-v4">₹{product.price}</div>
@@ -82,9 +92,7 @@ const ProductCard = ({ product }) => {
   );
 };
 
-/* ══════════════════════════════════════════
-   MAIN PAGE
-   ══════════════════════════════════════════ */
+// Main Page Component
 export default function ProductGrid() {
   const { category: currentCatId } = useParams();
   const navigate = useNavigate();
@@ -120,7 +128,10 @@ export default function ProductGrid() {
         }
         const res = await fetch(url);
         const data = await res.json();
-        setProducts(data.products || data.data || data || []);
+        
+        // Fix: Ensure we always set an array
+        const fetchedProducts = data.products || data.data || (Array.isArray(data) ? data : []);
+        setProducts(fetchedProducts);
       } catch (err) {
         console.error(err);
         setProducts([]);
@@ -132,6 +143,9 @@ export default function ProductGrid() {
   }, [currentCatId, queryParam, isSearchMode]);
 
   const displayedProducts = useMemo(() => {
+    // Defense: Ensure products is an array
+    if (!Array.isArray(products)) return [];
+    
     let filtered = products.filter(p => 
       p.name.toLowerCase().includes(search.toLowerCase())
     );
@@ -178,6 +192,12 @@ export default function ProductGrid() {
             </div>
 
             <div className="pg-categories-nav">
+              {isSearchMode && (
+                <div className="cat-pill active">
+                  <div className="cat-pill-icon"><Search size={16} /></div>
+                  <span>Results</span>
+                </div>
+              )}
               {categories.map(cat => (
                 <div 
                   key={cat._id} 
@@ -185,9 +205,9 @@ export default function ProductGrid() {
                   onClick={() => navigate(`/customer/products/${cat._id}`)}
                 >
                   <div className="cat-pill-icon">
-                    <img src={cat.icon} alt="" />
+                    {cat.icon ? <img src={cat.icon} alt="" /> : <LayoutGrid size={16} />}
                   </div>
-                  <span>{cat.name}</span>
+                  <span>{cat.name || "Category"}</span>
                 </div>
               ))}
             </div>

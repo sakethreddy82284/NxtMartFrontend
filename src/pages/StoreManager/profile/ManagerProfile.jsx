@@ -22,7 +22,6 @@ const ManagerProfile = () => {
 
   return (
     <div className="mgr-profile-wrapper">
-      <Navbar />
 
       <section className="mgr-profile-hero">
         <div className="mgr-avatar-box">

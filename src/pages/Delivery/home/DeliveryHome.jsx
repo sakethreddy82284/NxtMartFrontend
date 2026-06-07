@@ -7,28 +7,37 @@ import {
 import './DeliveryHome.css';
 import Navbar from '../../../components/common/navbar/Navbar';
 
-const BASE = 'http://localhost:2000';
+import { BASE_URL } from '../../../config';
 
 export default function DeliveryHome() {
   const [tasks, setTasks] = useState([]);
   const [unassigned, setUnassigned] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isOnline, setIsOnline] = useState(true);
+  const [earnings, setEarnings] = useState({ daily: 1450, total: 12840 });
 
   useEffect(() => {
     fetchData();
+    // Poll for new orders every 10 seconds
+    const interval = setInterval(fetchData, 10000);
+    return () => clearInterval(interval);
   }, []);
+
+  const [error, setError] = useState(null);
 
   const fetchData = async () => {
     try {
       setLoading(true);
+      setError(null);
       const [taskRes, unassignedRes] = await Promise.all([
-        axios.get(`${BASE}/orders/tasks`, { withCredentials: true }),
-        axios.get(`${BASE}/orders/unassigned`, { withCredentials: true })
+        axios.get(`${BASE_URL}/orders/tasks`, { withCredentials: true }),
+        axios.get(`${BASE_URL}/orders/unassigned`, { withCredentials: true })
       ]);
       setTasks(taskRes.data);
       setUnassigned(unassignedRes.data);
     } catch (err) {
       console.error(err);
+      setError(err.response?.status === 403 ? "Access Denied: You need Delivery Partner permissions." : "Failed to fetch orders.");
     } finally {
       setLoading(false);
     }
@@ -36,7 +45,7 @@ export default function DeliveryHome() {
 
   const updateStatus = async (orderId, newStatus) => {
     try {
-      await axios.put(`${BASE}/orders/${orderId}/status`, { status: newStatus }, { withCredentials: true });
+      await axios.put(`${BASE_URL}/orders/${orderId}/status`, { status: newStatus }, { withCredentials: true });
       fetchData(); // Refresh
     } catch (err) {
       alert("Failed to update status");
@@ -45,7 +54,7 @@ export default function DeliveryHome() {
 
   const claimOrder = async (orderId) => {
     try {
-      await axios.put(`${BASE}/orders/${orderId}/claim`, {}, { withCredentials: true });
+      await axios.put(`${BASE_URL}/orders/${orderId}/claim`, {}, { withCredentials: true });
       fetchData(); // Refresh
     } catch (err) {
       alert("Failed to claim order. It might already be taken.");
@@ -58,14 +67,39 @@ export default function DeliveryHome() {
       
       <main className="delivery-container">
         <header className="delivery-header">
-          <h1 className="delivery-title">Delivery Dashboard</h1>
+          <div className="header-top">
+            <h1 className="delivery-title">Pilot Console</h1>
+            <div className={`status-toggle ${isOnline ? 'online' : 'offline'}`} onClick={() => setIsOnline(!isOnline)}>
+              <div className="toggle-dot"></div>
+              <span>{isOnline ? 'Online' : 'Offline'}</span>
+            </div>
+          </div>
+          
+          <div className="delivery-earnings-bar">
+            <div className="e-card">
+              <span className="e-label">Today's Earnings</span>
+              <h2 className="e-value">₹{earnings.daily}</h2>
+            </div>
+            <div className="e-card">
+              <span className="e-label">Weekly Total</span>
+              <h2 className="e-value">₹{earnings.total}</h2>
+            </div>
+          </div>
+
           <div className="delivery-stats">
             <div className="stat-pill"><b>{tasks.length}</b> My Tasks</div>
-            <div className="stat-pill highlight"><b>{unassigned.length}</b> Available</div>
+            <div className="stat-pill highlight"><b>{unassigned.length}</b> Available Feed</div>
           </div>
         </header>
 
-        {loading ? (
+        {error && (
+          <div className="delivery-error-msg">
+            <AlertCircle size={20} />
+            <span>{error}</span>
+          </div>
+        )}
+
+        {loading && !tasks.length && !unassigned.length ? (
           <div className="delivery-loading">Loading Order Feed...</div>
         ) : (
           <div className="delivery-sections">
@@ -133,20 +167,13 @@ export default function DeliveryHome() {
                         <div className="address-box">
                           <MapPin size={16} className="pin-icon" />
                           <p>{task.userId?.address || 'Address not provided'}</p>
+                          <button className="nav-link-btn" onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(task.userId?.address)}`, '_blank')}>
+                            <Navigation size={14} /> Navigate
+                          </button>
                         </div>
                       </div>
 
                       <div className="task-actions">
-                        {task.status === 'confirmed' && (
-                          <button className="action-btn start" onClick={() => updateStatus(task._id, 'packing')}>
-                            Start Packing
-                          </button>
-                        )}
-                        {task.status === 'packing' && (
-                          <button className="action-btn ready" onClick={() => updateStatus(task._id, 'ready')}>
-                            Mark as Ready
-                          </button>
-                        )}
                         {task.status === 'ready' && (
                           <button className="action-btn out" onClick={() => updateStatus(task._id, 'out-for-delivery')}>
                             Pick Up & Start Delivery
@@ -156,6 +183,12 @@ export default function DeliveryHome() {
                           <button className="action-btn deliver" onClick={() => updateStatus(task._id, 'delivered')}>
                             Mark as Delivered
                           </button>
+                        )}
+                        {(task.status === 'confirmed' || task.status === 'packing') && (
+                          <div className="status-waiting">
+                            <Clock size={14} />
+                            <span>Being packed by store...</span>
+                          </div>
                         )}
                       </div>
                     </div>

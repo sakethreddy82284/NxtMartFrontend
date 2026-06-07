@@ -176,22 +176,22 @@ const ProductModal = ({ isOpen, onClose, onSave, product, categories }) => {
   const [imgErr, setImgErr] = useState(false);
   const [saving, setSaving] = useState(false);
 
-//   useEffect(() => {
-//     if (isOpen) {
-//       setForm({
-//         name:        product?.name        ?? '',
-//         price:       product?.price       ?? '',
-//         category:    typeof product?.category === 'object'
-//                        ? product?.category?._id ?? ''
-//                        : product?.category      ?? '',
-//         stock:       product?.stock       ?? '',
-//         image:       product?.image       ?? '',
-//         description: product?.description ?? '',
-//       });
-//       setImgErr(false);
-//       setSaving(false);
-//     }
-//   }, [product, isOpen]);
+  useEffect(() => {
+    if (isOpen) {
+      setForm({
+        name:        product?.name        ?? '',
+        price:       product?.price       ?? '',
+        category:    typeof product?.category === 'object'
+                       ? product?.category?._id ?? ''
+                       : product?.category      ?? '',
+        stock:       product?.stock       ?? '',
+        image:       product?.image       ?? '',
+        description: product?.description ?? '',
+      });
+      setImgErr(false);
+      setSaving(false);
+    }
+  }, [product, isOpen]);
 
   if (!isOpen) return null;
 
@@ -349,7 +349,8 @@ const ProductsPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selected,    setSelected]    = useState(null);
   const [toDelete,    setToDelete]    = useState(null);
-  const [search,      setSearch]      = useState('');
+  const { search: urlSearch } = React.useMemo(() => new URLSearchParams(window.location.search), []);
+  const [search, setSearch] = useState(new URLSearchParams(window.location.search).get('q') || '');
   const [catFilter,   setCatFilter]   = useState('');   // category _id or ''
 
   // ── fetch all products ──

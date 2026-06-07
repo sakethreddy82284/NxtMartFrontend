@@ -1,4 +1,4 @@
-import React from 'react'
+
 export const addToCart = async (productId) => {
   try {
     const res = await fetch("http://localhost:2000/cart", {

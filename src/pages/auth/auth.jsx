@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
+import { BASE_URL } from "../../config";
 import "./auth.css";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
@@ -178,7 +180,7 @@ const LoginForm = ({ setView }) => {
     setErrors({});
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:2000/auth/signin", {
+      const res = await fetch(`${BASE_URL}/auth/signin`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include", 
@@ -307,15 +309,34 @@ function SignupForm({ setView }) {
   const [agreed,      setAgreed]      = useState(false);
   const [errors,      setErrors]      = useState({});
   const [loading,     setLoading]     = useState(false);
+  const { getUser } = useAuth();
+  const navigate = useNavigate();
 
   const validate = () => {
     const e = {};
-    if (!name.trim())                          e.name     = "Required";
-    if (!phone.trim())                         e.phone    = "Phone is required";
+    if (!name.trim()) {
+      e.name = "Name is required";
+    } else if (!/^[A-Za-z\s]+$/.test(name)) {
+      e.name = "Name must contain only letters";
+    }
+    
+    if (!phone.trim()) {
+      e.phone = "Phone is required";
+    } else if (!/^[6-9]\d{9}$/.test(phone)) {
+      e.phone = "Enter a valid 10-digit Indian phone number";
+    }
+
     if (!email.trim())                         e.email    = "Email is required";
     else if (!/\S+@\S+\.\S+/.test(email))      e.email    = "Enter a valid email";
-    if (!password)                             e.password = "Password is required";
-    else if (password.length < 8)              e.password = "Minimum 8 characters";
+    
+    if (!password) {
+      e.password = "Password is required";
+    } else if (password.length < 8) {
+      e.password = "Minimum 8 characters";
+    } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/.test(password)) {
+      e.password = "Must include Uppercase, Lowercase, Number & Special Char";
+    }
+
     if (password !== confirm)                  e.confirm  = "Passwords do not match";
     if (!agreed)                               e.terms    = "Please agree to continue";
     return e;
@@ -328,7 +349,7 @@ function SignupForm({ setView }) {
     setErrors({});
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:2000/auth/signup", {
+      const res = await fetch(`${BASE_URL}/auth/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, phone, password }),
@@ -338,7 +359,9 @@ function SignupForm({ setView }) {
         setErrors(data.errors || { general: data.message || "Something went wrong" });
         return;
       }
-      setView("login");
+      // Sync state with backend (since backend sets cookie during signup)
+      await getUser();
+      navigate('/');
     } catch {
       setErrors({ general: "Server not reachable. Please try again." });
     } finally {

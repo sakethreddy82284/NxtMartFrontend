@@ -2,6 +2,8 @@ import { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "./User";
 
+import { BASE_URL } from "../../config";
+
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
@@ -12,7 +14,7 @@ export const CartProvider = ({ children }) => {
   // Fetch cart from backend
   const fetchCart = async () => {
     try {
-      const res = await axios.get("http://localhost:2000/cart", {
+      const res = await axios.get(`${BASE_URL}/cart`, {
         withCredentials: true,
       });
       setCart(res.data); // Fixed: res.data is the cart object
@@ -28,7 +30,7 @@ export const CartProvider = ({ children }) => {
   const addToCart = async (productId, quantity = 1) => {
     console.log("Adding to cart:", productId, quantity);
     try {
-      const res = await axios.post("http://localhost:2000/cart/add", 
+      const res = await axios.post(`${BASE_URL}/cart/add`, 
         { productId, quantity }, 
         { withCredentials: true }
       );
@@ -48,7 +50,7 @@ export const CartProvider = ({ children }) => {
       return removeFromCart(productId);
     }
     try {
-      const res = await axios.put("http://localhost:2000/cart/update", 
+      const res = await axios.put(`${BASE_URL}/cart/update`, 
         { productId, quantity }, 
         { withCredentials: true }
       );
@@ -59,9 +61,9 @@ export const CartProvider = ({ children }) => {
   };
 
   // Place Order
-  const placeOrder = async () => {
+  const placeOrder = async (paymentMethod = 'COD') => {
     try {
-      const res = await axios.post("http://localhost:2000/orders/create", {}, { withCredentials: true });
+      const res = await axios.post(`${BASE_URL}/orders/create`, { paymentMethod }, { withCredentials: true });
       setCart({ items: [] }); // Clear local cart state
       return res.data; // Should contain the new order object
     } catch (err) {
@@ -73,7 +75,7 @@ export const CartProvider = ({ children }) => {
   // Remove from cart
   const removeFromCart = async (productId) => {
     try {
-      const res = await axios.delete(`http://localhost:2000/cart/remove/${productId}`, {
+      const res = await axios.delete(`${BASE_URL}/cart/remove/${productId}`, {
         withCredentials: true,
       });
       setCart(res.data); // Fixed: res.data is the cart object
@@ -86,7 +88,7 @@ export const CartProvider = ({ children }) => {
   // Clear cart
   const clearCart = async () => {
     try {
-      const res = await axios.delete("http://localhost:2000/cart/clear", {
+      const res = await axios.delete(`${BASE_URL}/cart/clear`, {
         withCredentials: true,
       });
       setCart(res.data.cart);

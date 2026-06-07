@@ -84,13 +84,13 @@ const CategoryModal = ({ isOpen, onClose, onSave, category }) => {
   const [image, setImage] = useState('');
   const [imgErr, setImgErr] = useState(false);
 
-//   useEffect(() => {
-//     if (isOpen) {
-//       setName(category?.name  ?? '');
-//       setImage(category?.icon ?? '');
-//       setImgErr(false);
-//     }
-//   }, [category, isOpen]);
+  useEffect(() => {
+    if (isOpen) {
+      setName(category?.name  ?? '');
+      setImage(category?.icon ?? '');
+      setImgErr(false);
+    }
+  }, [category, isOpen]);
 
   if (!isOpen) return null;
 

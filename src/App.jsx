@@ -14,6 +14,8 @@ import Categories from './pages/Customer/categories/categories'
 import Cart from './pages/Customer/cart/Cart'
 import OrderSuccess from './pages/Customer/cart/OrderSuccess'
 import Profile from './pages/Customer/profile/Profile'
+import OrderTracking from './pages/Customer/profile/OrderTracking'
+import Wallet from './pages/Customer/profile/Wallet'
 
 // NEW DASHBOARDS
 import AdminHome from './pages/Admin/home/AdminHome'
@@ -21,6 +23,7 @@ import DeliveryHome from './pages/Delivery/home/DeliveryHome'
 import DeliveryProfile from './pages/Delivery/profile/DeliveryProfile'
 import ManagerProfile from './pages/StoreManager/profile/ManagerProfile'
 import RoleRedirect from './pages/auth/RoleRedirect'
+import SingleProduct from './pages/Customer/products/SingleProduct'
 
 function App() {
   return (
@@ -109,6 +112,15 @@ function App() {
         />
 
         <Route
+          path="/product/:id" 
+          element={
+            <ProtectedRoute allowedRoles={["customer"]}>
+              <SingleProduct />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
           path="/cart" 
           element={
             <ProtectedRoute allowedRoles={["customer"]}>
@@ -138,6 +150,22 @@ function App() {
           element={
             <ProtectedRoute allowedRoles={["customer"]}>
               <Profile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/customer/track/:id" 
+          element={
+            <ProtectedRoute allowedRoles={["customer"]}>
+              <OrderTracking />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/wallet" 
+          element={
+            <ProtectedRoute allowedRoles={["customer"]}>
+              <Wallet />
             </ProtectedRoute>
           }
         />

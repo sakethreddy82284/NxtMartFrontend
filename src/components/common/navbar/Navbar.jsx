@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./navbar.css";
 import { useCart } from "../../Context/CartContext";
 import { useAuth } from "../../Context/User";
 import { Link, useNavigate } from "react-router-dom";
-import { ShoppingBag } from "lucide-react";
+import { ShoppingBag, Mic } from "lucide-react";
 
 const SearchIcon = () => (
   <svg width="20" height="20" fill="none" stroke="#64748b" strokeWidth="1.8" viewBox="0 0 24 24">
@@ -26,28 +26,64 @@ export default function Navbar({ hideSearch = false }) {
   const [focused, setFocused] = useState(false);
   const [mobileFocused, setMobileFocused] = useState(false);
   const [query, setQuery] = useState("");
+  const [isListening, setIsListening] = useState(false);
+  const [badgeAnimate, setBadgeAnimate] = useState(false);
 
-  const handleSearch = (e) => {
-    e?.preventDefault();
-    if (query.trim()) {
-      navigate(`/customer/products/search?q=${encodeURIComponent(query.trim())}`);
-      setQuery("");
+  useEffect(() => {
+    if (cartCount > 0) {
+      setBadgeAnimate(true);
+      const timer = setTimeout(() => setBadgeAnimate(false), 400);
+      return () => clearTimeout(timer);
     }
+  }, [cartCount]);
+
+  const startVoiceSearch = () => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert("Voice search is not supported in this browser.");
+      return;
+    }
+    const recognition = new SpeechRecognition();
+    recognition.onstart = () => setIsListening(true);
+    recognition.onend = () => setIsListening(false);
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      setQuery(transcript);
+      // Auto submit
+      handleSearch({ preventDefault: () => {} }, transcript);
+    };
+    recognition.start();
+  };
+
+  const handleSearch = (e, overideQuery) => {
+    e?.preventDefault();
+    const finalQuery = overideQuery || query;
+    if (!finalQuery.trim()) return;
+
+    const searchTerm = encodeURIComponent(finalQuery.trim());
+    
+    if (user?.role === 'manager' || user?.role === 'admin') {
+      navigate(`/manager/products?q=${searchTerm}`);
+    } else {
+      navigate(`/customer/products/search?q=${searchTerm}`);
+    }
+    
+    setQuery("");
   };
 
   return (
     <header className="nb-header">
-      {/* ── Announcement bar ── */}
+
       <div className="nb-announcement">
         <span className="nb-ann-text">
           Free delivery on orders above ₹299
         </span>
       </div>
 
-      {/* ── Main navbar ── */}
+
       <div className="nb-main">
         <div className="nb-container">
-          {/* LEFT — Brand */}
+
           <Link 
             to={user?.role === 'manager' ? "/manager/home" : user?.role === 'delivery' ? "/delivery" : "/customer"} 
             className="nb-brand" 
@@ -59,7 +95,7 @@ export default function Navbar({ hideSearch = false }) {
             </div>
           </Link>
 
-          {/* CENTER — Search (Moves below on mobile via CSS) */}
+
           {!hideSearch && (
             <div className="nb-search-row">
               <form className={`nb-search-bar${focused ? " nb-search-active" : ""}`} onSubmit={handleSearch}>
@@ -77,16 +113,19 @@ export default function Navbar({ hideSearch = false }) {
                   onFocus={() => setFocused(true)}
                   onBlur={() => setFocused(false)}
                 />
+                <button type="button" className={`nb-mic-btn ${isListening ? 'listening' : ''}`} onClick={startVoiceSearch}>
+                  <Mic size={18} />
+                </button>
                 <button type="submit" className="nb-search-btn">Search</button>
               </form>
             </div>
           )}
 
-          {/* RIGHT — Actions */}
+
           <div className="nb-actions">
             {user?.role !== 'manager' && user?.role !== 'delivery' && (
               <Link to="/cart" className="nb-cart-btn" aria-label="View Cart">
-                <span className="nb-cart-badge">{cartCount}</span>
+                <span className={`nb-cart-badge ${badgeAnimate ? 'anim-badge-bounce' : ''}`}>{cartCount}</span>
                 <CartIcon />
               </Link>
             )}
