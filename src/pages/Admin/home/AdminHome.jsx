@@ -10,7 +10,7 @@ import AdminSidebar from './AdminSidebar';
 import AdminBI from '../bi/AdminBI'; // Added
 import './AdminHome.css';
 
-const BASE = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1' ? 'https://nxtmartbackend-2-q25g.onrender.com' : 'http://localhost:2000';
+const BASE = 'https://nxtmartbackend-2-q25g.onrender.com';
 
 export default function AdminHome() {
   const { user, logout } = useAuth();

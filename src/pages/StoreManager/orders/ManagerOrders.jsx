@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Package, Truck, User, Clock, CheckCircle, ChevronRight, AlertCircle } from 'lucide-react';
 import './ManagerOrders.css';
 
-const BASE = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1' ? 'https://nxtmartbackend-2-q25g.onrender.com' : 'http://localhost:2000';
+const BASE = 'https://nxtmartbackend-2-q25g.onrender.com';
 
 export default function ManagerOrders() {
   const [orders, setOrders] = useState([]);

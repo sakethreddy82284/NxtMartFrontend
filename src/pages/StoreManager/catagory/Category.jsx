@@ -9,7 +9,7 @@ import axios from 'axios';
 
 // ─────────────────────────────────────────────
 // Helpers
-const BASE_URL = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1' ? 'https://nxtmartbackend-2-q25g.onrender.com' : 'http://localhost:2000';
+const BASE_URL = 'https://nxtmartbackend-2-q25g.onrender.com';
 // ─────────────────────────────────────────────
 const toastOpts = {
   success: { className: 'toast-success', iconTheme: { primary: '#166534', secondary: '#fff' } },

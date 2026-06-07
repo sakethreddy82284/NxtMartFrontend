@@ -11,7 +11,7 @@ import axios from 'axios';
 import Navbar from '../../../components/common/navbar/Navbar';
 
 
-const BASE = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1' ? 'https://nxtmartbackend-2-q25g.onrender.com' : 'http://localhost:2000';
+const BASE = 'https://nxtmartbackend-2-q25g.onrender.com';
 
 const toastOpts = {
   success: { className: 'toast-success', iconTheme: { primary: '#059669', secondary: '#fff' } },

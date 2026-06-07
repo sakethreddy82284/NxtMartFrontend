@@ -201,7 +201,8 @@ const LoginForm = ({ setView }) => {
       else if (role === 'manager') navigate('/manager/home');
       else if (role === 'delivery') navigate('/delivery');
       else navigate('/customer');
-    } catch {
+    } catch (err) {
+      console.error("Sign in error details:", err);
       setErrors({ general: "Server not reachable. Please try again." });
     } finally {
       setLoading(false);
@@ -362,7 +363,8 @@ function SignupForm({ setView }) {
       // Sync state with backend (since backend sets cookie during signup)
       await getUser();
       navigate('/');
-    } catch {
+    } catch (err) {
+      console.error("Sign up error details:", err);
       setErrors({ general: "Server not reachable. Please try again." });
     } finally {
       setLoading(false);
