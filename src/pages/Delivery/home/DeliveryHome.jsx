@@ -18,7 +18,7 @@ export default function DeliveryHome() {
 
   useEffect(() => {
     fetchData();
-    // Poll for new orders every 10 seconds
+  
     const interval = setInterval(fetchData, 10000);
     return () => clearInterval(interval);
   }, []);

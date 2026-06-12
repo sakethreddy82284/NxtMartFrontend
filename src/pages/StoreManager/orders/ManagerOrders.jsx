@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Package, Truck, User, Clock, CheckCircle, ChevronRight, AlertCircle } from 'lucide-react';
 import './ManagerOrders.css';
 
-const BASE = 'https://nxtmartbackend-2-q25g.onrender.com';
+import { BASE_URL } from '../../../config';
 
 export default function ManagerOrders() {
   const [orders, setOrders] = useState([]);
@@ -19,8 +19,8 @@ export default function ManagerOrders() {
     try {
       setLoading(true);
       const [oRes, pRes] = await Promise.all([
-        axios.get(`${BASE}/orders/all`, { withCredentials: true }),
-        axios.get(`${BASE}/auth/partners`, { withCredentials: true })
+        axios.get(`${BASE_URL}/orders/all`, { withCredentials: true }),
+        axios.get(`${BASE_URL}/auth/partners`, { withCredentials: true })
       ]);
       setOrders(oRes.data);
       setPartners(pRes.data.partners);
@@ -35,7 +35,7 @@ export default function ManagerOrders() {
     if (!partnerId) return;
     try {
       setAssigningId(orderId);
-      await axios.put(`${BASE}/orders/assign`, { orderId, partnerId }, { withCredentials: true });
+      await axios.put(`${BASE_URL}/orders/assign`, { orderId, partnerId }, { withCredentials: true });
       fetchData(); // Refresh
     } catch (err) {
       alert("Failed to assign order");
@@ -46,7 +46,7 @@ export default function ManagerOrders() {
 
   const handleStatusUpdate = async (orderId, newStatus) => {
     try {
-      await axios.put(`${BASE}/orders/${orderId}/status`, { status: newStatus }, { withCredentials: true });
+      await axios.put(`${BASE_URL}/orders/${orderId}/status`, { status: newStatus }, { withCredentials: true });
       fetchData(); // Refresh
     } catch (err) {
       alert("Failed to update status");

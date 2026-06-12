@@ -204,7 +204,7 @@ const LoginForm = ({ setView }) => {
         <button 
           type="button" 
           className="zt-forgot"
-          onClick={() => alert("Password reset instructions have been sent to your email.")}
+          onClick={() => setView("forgot")}
         >
           Forgot password?
         </button>
@@ -228,6 +228,201 @@ const LoginForm = ({ setView }) => {
         <button type="button" onClick={() => setView("signup")}>
           Create account
         </button>
+      </p>
+    </form>
+  );
+}
+
+function ForgotPasswordForm({ setView, onTokenCreated }) {
+  const [email, setEmail] = useState("");
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+
+  const validate = () => {
+    const e = {};
+    if (!email.trim()) e.email = "Email is required";
+    else if (!/\S+@\S+\.\S+/.test(email)) e.email = "Enter a valid email";
+    return e;
+  };
+
+  const handleSubmit = async (ev) => {
+    ev.preventDefault();
+    const errs = validate();
+    if (Object.keys(errs).length) { setErrors(errs); return; }
+    setErrors({});
+    setLoading(true);
+
+    try {
+      const res = await fetch(`${BASE_URL}/auth/forgot-password`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        setErrors({ general: data.message || "Could not process request" });
+      } else {
+        onTokenCreated(data.resetToken || "");
+        setView("reset");
+      }
+    } catch (err) {
+      console.error("Forgot password error:", err);
+      setErrors({ general: "Server not reachable. Please try again." });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} noValidate>
+      <div className="zt-form-head">
+        <div className="zt-eyebrow">Reset password</div>
+        <h2 className="zt-form-title">Forgot your password?</h2>
+        <p className="zt-form-sub">Enter your email to receive a reset token.</p>
+      </div>
+
+      <BannerError msg={errors.general} />
+
+      <div className="zt-field">
+        <label className="zt-label" htmlFor="fp-email">Email address</label>
+        <div className="zt-input-wrap">
+          <span className="zt-icon">✉️</span>
+          <input
+            id="fp-email"
+            className={`zt-input${errors.email ? " error" : ""}`}
+            type="email"
+            placeholder="you@email.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            autoComplete="email"
+          />
+        </div>
+        <FieldError msg={errors.email} />
+      </div>
+
+      <button className="zt-cta" type="submit" disabled={loading}>
+        {loading ? <span className="zt-spinner" /> : <span>Send reset token</span>}
+      </button>
+
+      <p className="zt-switch">
+        Remembered your password?&nbsp;
+        <button type="button" onClick={() => setView("login")}>Sign in</button>
+      </p>
+    </form>
+  );
+}
+
+function ResetPasswordForm({ setView, token }) {
+  const [resetToken, setResetToken] = useState(token || "");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+
+  const validate = () => {
+    const e = {};
+    if (!resetToken.trim()) e.token = "Reset token is required";
+    if (!password) e.password = "Password is required";
+    if (!confirmPassword) e.confirmPassword = "Please confirm your password";
+    if (password && confirmPassword && password !== confirmPassword) e.confirmPassword = "Passwords do not match";
+    return e;
+  };
+
+  const handleSubmit = async (ev) => {
+    ev.preventDefault();
+    const errs = validate();
+    if (Object.keys(errs).length) { setErrors(errs); return; }
+    setErrors({});
+    setLoading(true);
+
+    try {
+      const res = await fetch(`${BASE_URL}/auth/reset-password`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ token: resetToken, password, confirmPassword }),
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        setErrors({ general: data.message || "Could not reset password" });
+      } else {
+        setView("login");
+      }
+    } catch (err) {
+      console.error("Reset password error:", err);
+      setErrors({ general: "Server not reachable. Please try again." });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} noValidate>
+      <div className="zt-form-head">
+        <div className="zt-eyebrow">Reset password</div>
+        <h2 className="zt-form-title">Set a new password</h2>
+        <p className="zt-form-sub">Paste your reset token and choose a new password.</p>
+      </div>
+
+      <BannerError msg={errors.general} />
+
+      <div className="zt-field">
+        <label className="zt-label" htmlFor="rp-token">Reset token</label>
+        <div className="zt-input-wrap">
+          <span className="zt-icon">🔑</span>
+          <input
+            id="rp-token"
+            className={`zt-input${errors.token ? " error" : ""}`}
+            type="text"
+            placeholder="Enter your reset token"
+            value={resetToken}
+            onChange={(e) => setResetToken(e.target.value)}
+          />
+        </div>
+        <FieldError msg={errors.token} />
+      </div>
+
+      <div className="zt-field">
+        <label className="zt-label" htmlFor="rp-pass">New password</label>
+        <div className="zt-input-wrap">
+          <span className="zt-icon">🔐</span>
+          <input
+            id="rp-pass"
+            className={`zt-input${errors.password ? " error" : ""}`}
+            type="password"
+            placeholder="New password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+        <FieldError msg={errors.password} />
+      </div>
+
+      <div className="zt-field">
+        <label className="zt-label" htmlFor="rp-confirm">Confirm password</label>
+        <div className="zt-input-wrap">
+          <span className="zt-icon">🔐</span>
+          <input
+            id="rp-confirm"
+            className={`zt-input${errors.confirmPassword ? " error" : ""}`}
+            type="password"
+            placeholder="Confirm new password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+        </div>
+        <FieldError msg={errors.confirmPassword} />
+      </div>
+
+      <button className="zt-cta" type="submit" disabled={loading}>
+        {loading ? <span className="zt-spinner" /> : <span>Reset password</span>}
+      </button>
+
+      <p className="zt-switch">
+        Need a new token?&nbsp;
+        <button type="button" onClick={() => setView("forgot")}>Request again</button>
       </p>
     </form>
   );
@@ -459,6 +654,7 @@ function SignupForm({ setView }) {
 /* ─── Root ─── */
 export default function AuthPage() {
   const [view, setView] = useState("login");
+  const [resetToken, setResetToken] = useState("");
   const navigate = useNavigate();
   const { user, loading } = useAuth();
 
@@ -481,10 +677,15 @@ export default function AuthPage() {
         </div>
 
         <div className="zt-card">
-          {view === "login"
-            ? <LoginForm  setView={setView} />
-            : <SignupForm setView={setView} />
-          }
+          {view === "login" ? (
+            <LoginForm setView={setView} />
+          ) : view === "signup" ? (
+            <SignupForm setView={setView} />
+          ) : view === "forgot" ? (
+            <ForgotPasswordForm setView={setView} onTokenCreated={setResetToken} />
+          ) : (
+            <ResetPasswordForm setView={setView} token={resetToken} />
+          )}
         </div>
       </div>
     </div>
